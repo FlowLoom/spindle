@@ -1,2 +1,4 @@
 click==8.1.7
 gitpython==3.1.43
+requests==2.5.0
+beautifulsoup4==4.11.0
