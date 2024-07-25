@@ -1,4 +1,6 @@
 from ct.interfaces import IHandler
+from abc import abstractmethod
+from typing import Dict, List
 
 __All__ = ["AbstractHandler"]
 

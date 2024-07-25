@@ -1,4 +1,5 @@
 from ct.interfaces import IProcessor
+from abc import abstractmethod
 from typing import List
 
 __All__ = ["AbstractFileProcessor"]
