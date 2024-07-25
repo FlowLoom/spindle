@@ -3,6 +3,8 @@ import logging
 from typing import Dict, List
 from ct.abstracts import AbstractFileParser
 
+__All__ = ["CodeParser"]
+
 
 class CodeParser(AbstractFileParser):
     """Parses files in a source directory based on exclusion rules and file extensions."""
