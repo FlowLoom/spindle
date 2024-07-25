@@ -1,6 +1,8 @@
 from ct.interfaces import IProcessor
 from typing import List
 
+__All__ = ["AbstractFileProcessor"]
+
 
 class AbstractFileProcessor(IProcessor):
     """Abstract class for file processors."""
