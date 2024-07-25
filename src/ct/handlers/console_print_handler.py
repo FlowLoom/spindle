@@ -1,6 +1,8 @@
 from typing import Dict, List
 from ct.abstracts import AbstractHandler
 
+__All__ = ["ConsolePrintHandler"]
+
 
 class ConsolePrintHandler(AbstractHandler):
     """Handles the parsed files' content by printing them to the console."""
