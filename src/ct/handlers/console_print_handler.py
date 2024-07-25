@@ -1,5 +1,5 @@
 from typing import Dict, List
-from .abstracts import AbstractHandler
+from ct.abstracts import AbstractHandler
 
 
 class ConsolePrintHandler(AbstractHandler):
