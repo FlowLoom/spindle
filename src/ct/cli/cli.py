@@ -1,7 +1,7 @@
 import click
 from ct.parsers import CodeParser
 from ct.config import ConfigManager
-from ct.handlers import ConsolePrintHandler
+from ct.handlers import ConsolePrintHandler, FileHandler
 from ct.processors import FileProcessor
 
 __all__ = ["cli"]
