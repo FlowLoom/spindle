@@ -11,13 +11,13 @@ class AbstractFileParser(IParser):
     """Abstract class for file parsers."""
     def __init__(
             self,
-            file_processor: IProcessor,
+            processor: IProcessor,
             src_folder: str,
             excluded_dirs: List[str],
             excluded_files: List[str],
             file_extensions: List[str]
     ):
-        self.file_processor = file_processor
+        self.processor = processor
         self.src_folder = src_folder
         self.excluded_dirs = excluded_dirs
         self.excluded_files = excluded_files
@@ -35,7 +35,7 @@ class AbstractFileParser(IParser):
                     continue
                 module_path = os.path.join(root, file)
                 logging.info(f"Processing file: {file}")
-                content = self.file_processor.process(module_path)
+                content = self.processor.process(module_path)
                 parsed_files[file] = content
 
         return parsed_files
