@@ -2,6 +2,8 @@ from ct.abstracts import AbstractFileProcessor
 from typing import List
 import logging
 
+__All__ = ["FileProcessor"]
+
 
 class FileProcessor(AbstractFileProcessor):
     """Concrete implementation of AbstractFileProcessor."""
