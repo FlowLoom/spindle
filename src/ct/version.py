@@ -1,7 +1,4 @@
-"""Version information for :mod:`bohicalog`.
-
-Run with ``python -m bohicalog.version``
-"""
+"""Version information"""
 
 import os
 from pathlib import Path
