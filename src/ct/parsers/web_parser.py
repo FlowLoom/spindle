@@ -5,6 +5,9 @@ from ct.abstracts import AbstractWebParser
 from ct.interfaces import IProcessor
 from typing import Dict, List
 
+__All__ = ['WebParser']
+
+
 class WebParser(AbstractWebParser):
     def __init__(self, processor: IProcessor, url: str, method: str = 'custom'):
         super().__init__(processor, url)
