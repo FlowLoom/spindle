@@ -13,8 +13,8 @@ class ConsolePrintHandler(AbstractHandler):
         Args:
             parsed_files (Dict[str, List[str]]): A dictionary where the key is the file name and the value is a list of strings representing the file's content.
         """
-        for file_name, content in parsed_files.items():
-            print(f"File: {file_name}")
+        for item, content in parsed_files.items():
+            print(f"{item}")
             for line in content:
                 print(line)
             print("\n" + "="*40 + "\n")
