@@ -52,9 +52,21 @@ The goals of this exercise are to:
 
 - In an output section called CODE STRUCTURE, summarize the main components and relationships identified in the code sample in a set of 15-word bullets.
 
+// Identify code layout
+
+- In an output section called CODE LAYOUT, describe the directory structure and modules of the codebase in a set of 15-word bullets.
+
 // List identified patterns and practices
 
 - In an output section called PATTERNS AND PRACTICES, list and briefly describe each pattern or practice identified in the code in a bullet and a 15-word summary.
+
+// List design principles used throughout the project.
+
+- In an output section called DESIGN PRINCIPLES, list and briefly describe each design principle used in the code in a set of 15-word bullets.
+
+// Evaluate modularity, adaptability, and extensibility
+
+- In an output section called EVALUATION, assess the code's modularity, adaptability, and extensibility in a 15-word summary.
 
 // Provide recommendations
 
