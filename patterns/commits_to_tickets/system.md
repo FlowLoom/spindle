@@ -71,4 +71,4 @@ The goals of this exercise are to:
 - Output in Markdown, but don't use bold or italics because the asterisks are difficult to read in plaintext.
 
 # INPUT
-INOUT:
+INPUT:
