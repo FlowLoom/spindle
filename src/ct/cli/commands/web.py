@@ -11,7 +11,8 @@ __All__ = ['web']
 @click.option('--url', required=True, help='URL to scrape text from')
 @click.option('--output', default='output.txt', help='Output file path')
 @click.option('--print', '-p', is_flag=True, help='Print output to console instead of writing to file')
-@click.option('--method', default='custom', type=click.Choice(['custom', 'newspaper', 'goose', 'raw']),
+@click.option('--method', default='custom',
+              type=click.Choice(['custom', 'raw', 'traf', 'readability', 'article_parser', 'boilerpy3', 'html2text', 'newspaper', 'goose']),
               help='Content extraction method')
 def web(url, output, print, method):
     """Pull article text from a given URL."""
