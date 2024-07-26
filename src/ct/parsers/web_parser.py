@@ -33,7 +33,7 @@ class WebParser(AbstractWebParser):
         except ImportError:
             pass
         try:
-            # TODO: gives a urllib.error.HTTPError: HTTP Error 403: Forbidden error
+            # TODO: gives a "urllib.error.HTTPError: HTTP Error 403: Forbidden" error
             from boilerpy3 import extractors
             self.available_methods.append('boilerpy3')
         except ImportError:
