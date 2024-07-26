@@ -36,7 +36,7 @@ class AbstractFileParser(IParser):
                 module_path = os.path.join(root, file)
                 logging.info(f"Processing file: {file}")
                 content = self.processor.process(module_path)
-                parsed_files[file] = content
+                parsed_files[module_path] = content
 
         return parsed_files
 
