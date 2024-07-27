@@ -10,7 +10,10 @@ __all__ = ["cli"]
 
 @click.group()
 def cli():
-    """CLI tool for parsing source code files."""
+    """
+    A powerful CLI tool for executing and managing saved automation patterns within the Flowloom ecosystem, enhancing
+    precision and efficiency in AI-driven workflows.
+    """
     pass
 
 
