@@ -18,7 +18,24 @@ __all__ = ["git"]
 @click.option('--count', is_flag=True, help='Return the number of commits in the repository')
 @click.option('--hash', help='Return commit by full hash or last 5 characters of the hash')
 def git(repo, output, print, start, end, count, hash):
-    """Parse git commit messages and output their content to a text file or console."""
+    """
+    Parse git commit messages and output their content to a text file or console.
+
+    Args:
+        repo (str): Git repository URL or local path.
+        output (str): Output file path. Defaults to 'output.txt'.
+        print (bool): Flag to print output to console instead of writing to file.
+        start (int, optional): Start index for commit range.
+        end (int, optional): End index for commit range.
+        count (bool): Flag to return the number of commits in the repository.
+        hash (str, optional): Full hash or last 5 characters of the hash to return a specific commit.
+
+    Returns:
+        None
+
+    Raises:
+        click.ClickException: If there's an error during execution.
+    """
     processor = DummyProcessor()
     parser = GitCommitParser(processor=processor, source=repo)
 
@@ -32,6 +49,7 @@ def git(repo, output, print, start, end, count, hash):
         return
 
     if hash:
+        #TODO: Currently only supports full hash
         commit_data = parser.get_commit_by_hash(repo, hash)
         if not commit_data:
             click.echo(f"No commit found with hash: {hash}")
@@ -39,6 +57,7 @@ def git(repo, output, print, start, end, count, hash):
     else:
         commit_data = parser.parse(repo, start, end)
 
+    # Choose the appropriate handler based on the print flag
     if print:
         handler = ConsolePrintHandler()
     else:
