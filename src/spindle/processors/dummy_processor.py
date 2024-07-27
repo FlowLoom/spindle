@@ -6,9 +6,23 @@ __All__ = ["DummyProcessor"]
 
 
 class DummyProcessor(IProcessor):
-    """Dummy processor that echoes the input."""
+    """
+    A dummy processor that echoes the input.
+
+    This class implements the IProcessor interface and provides a simple
+    echo functionality for demonstration or testing purposes.
+    """
 
     def process(self, echo: Any) -> Any:
+        """
+        Process the input by returning it unchanged.
+
+        Args:
+            echo (Any): The input to be echoed.
+
+        Returns:
+            Any: The input value, unchanged.
+        """
 
         content = echo
 
