@@ -4,6 +4,7 @@ from spindle.parsers import CodeParser
 from spindle.config import ConfigManager
 from spindle.handlers import ConsolePrintHandler, FileHandler
 from spindle.processors import FileProcessor
+from spindle.visitors import StatisticsVisitor
 
 __all__ = ["code"]
 
@@ -16,8 +17,8 @@ __all__ = ["code"]
 @click.option('--extensions', default='.py,.js,.html,.css',
               help='Comma-separated list of file extensions to include')
 @click.option('--config', help='Path to the configuration file')
-@click.option('--print', '-p', is_flag=True, help='Print output to console instead of writing to file')
-def code(src, output, excluded_dirs, excluded_files, extensions, config, print):
+@click.option('--con', '-c', is_flag=True, help='Print output to console instead of writing to file')
+def code(src, output, excluded_dirs, excluded_files, extensions, config, con):
     """Parse source code files and output their content to a text file or console."""
     if config:
         config_manager = ConfigManager(config)
@@ -27,17 +28,21 @@ def code(src, output, excluded_dirs, excluded_files, extensions, config, print):
         excluded_files = config_manager.get('Exclusions', 'excluded_files', fallback=excluded_files)
         extensions = config_manager.get('Extensions', 'file_extensions', fallback=extensions)
 
+    stats_visitor = StatisticsVisitor()
+
     excluded_dirs = [d.strip() for d in excluded_dirs.split(',') if d.strip()]
     excluded_files = [f.strip() for f in excluded_files.split(',') if f.strip()]
     file_extensions = [e.strip() for e in extensions.split(',') if e.strip()]
 
     file_processor = FileProcessor()
     parser = CodeParser(file_processor, src, excluded_dirs, excluded_files, file_extensions)
+    parser.accept(stats_visitor)
     parsed_files = parser.parse()
 
-    if print:
+    if con:
         handler = ConsolePrintHandler()
     else:
         handler = FileHandler(output_file=output)  # Assuming FileHandler is defined for file output
 
     handler.handle(parsed_files)
+    print("Stats: ", stats_visitor.stats)
