@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Type, List
-from ct.interfaces import IProcessor, IParser, IHandler
+from spindle.interfaces import IProcessor, IParser, IHandler
 
 __All__ = ["ICerebro"]
 

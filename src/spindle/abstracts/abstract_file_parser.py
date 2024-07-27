@@ -1,4 +1,4 @@
-from ct.interfaces import IParser, IProcessor
+from spindle.interfaces import IParser, IProcessor
 from abc import abstractmethod
 from typing import Dict, List
 import os

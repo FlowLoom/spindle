@@ -1,12 +1,12 @@
 import click
-from ct.parsers import CodeParser, GitCommitParser
-from ct.config import ConfigManager
-from ct.handlers import ConsolePrintHandler, FileHandler
-from ct.processors import FileProcessor, DummyProcessor
-from ct.cli.commands import code, git, web
-
+from spindle.parsers import CodeParser, GitCommitParser
+from spindle.config import ConfigManager
+from spindle.handlers import ConsolePrintHandler, FileHandler
+from spindle.processors import FileProcessor, DummyProcessor
+from spindle.cli.commands import code, git, web
 
 __all__ = ["cli"]
+
 
 @click.group()
 def cli():

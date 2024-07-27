@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from typing import Any, Dict, List
-from ct.interfaces import IProcessor, IParser
+from spindle.interfaces import IProcessor, IParser
 
 __All__ = ['AbstractWebParser']
 

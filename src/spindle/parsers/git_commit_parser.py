@@ -1,6 +1,6 @@
 # git_commit_parser.py
 from typing import Any, Dict, List, Optional
-from ct.abstracts import AbstractGitParser
+from spindle.abstracts import AbstractGitParser
 from git import Repo
 
 __All__ = ['GitCommitParser']

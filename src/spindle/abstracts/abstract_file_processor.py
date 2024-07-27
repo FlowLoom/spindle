@@ -1,4 +1,4 @@
-from ct.interfaces import IProcessor
+from spindle.interfaces import IProcessor
 from abc import abstractmethod
 from typing import List
 

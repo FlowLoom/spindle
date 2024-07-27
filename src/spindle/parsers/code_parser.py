@@ -1,7 +1,7 @@
 import os
 import logging
 from typing import Dict, List
-from ct.abstracts import AbstractFileParser
+from spindle.abstracts import AbstractFileParser
 
 __All__ = ["CodeParser"]
 

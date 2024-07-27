@@ -1,5 +1,5 @@
 from typing import Dict, List
-from ct.abstracts import AbstractHandler
+from spindle.abstracts import AbstractHandler
 
 __All__ = ["ConsolePrintHandler"]
 

@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from ct.abstracts import AbstractWebParser
-from ct.interfaces import IProcessor
+from spindle.abstracts import AbstractWebParser
+from spindle.interfaces import IProcessor
 from typing import Dict, List
 
 __All__ = ['WebParser']

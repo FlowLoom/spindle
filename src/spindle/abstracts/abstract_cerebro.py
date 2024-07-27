@@ -1,5 +1,5 @@
 from typing import Any, Type, List
-from ct.interfaces import ICerebro, IParser, IHandler, IProcessor
+from spindle.interfaces import ICerebro, IParser, IHandler, IProcessor
 
 __All__ = ["AbstractCerebro"]
 

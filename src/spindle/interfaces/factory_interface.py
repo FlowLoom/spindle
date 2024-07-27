@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ct.interfaces import IParser, IProcessor, IHandler
+from spindle.interfaces import IParser, IProcessor, IHandler
 
 __All__ = ['IParserFactory']
 

@@ -1,4 +1,4 @@
-from ct.interfaces import IHandler
+from spindle.interfaces import IHandler
 from abc import abstractmethod
 from typing import Dict, List
 

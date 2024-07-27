@@ -1,4 +1,4 @@
-from ct.abstracts import AbstractFileProcessor
+from spindle.abstracts import AbstractFileProcessor
 from typing import List
 import logging
 

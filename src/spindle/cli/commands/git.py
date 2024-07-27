@@ -1,10 +1,10 @@
 # git.py
 import click
-from ct.cli.commands import cli
-from ct.parsers import GitCommitParser
-from ct.config import ConfigManager
-from ct.handlers import ConsolePrintHandler, FileHandler
-from ct.processors import DummyProcessor
+from spindle.cli.commands import cli
+from spindle.parsers import GitCommitParser
+from spindle.config import ConfigManager
+from spindle.handlers import ConsolePrintHandler, FileHandler
+from spindle.processors import DummyProcessor
 
 __all__ = ["git"]
 

@@ -1,11 +1,12 @@
 import click
-from ct.cli.commands import cli
-from ct.parsers import CodeParser
-from ct.config import ConfigManager
-from ct.handlers import ConsolePrintHandler, FileHandler
-from ct.processors import FileProcessor
+from spindle.cli.commands import cli
+from spindle.parsers import CodeParser
+from spindle.config import ConfigManager
+from spindle.handlers import ConsolePrintHandler, FileHandler
+from spindle.processors import FileProcessor
 
 __all__ = ["code"]
+
 
 @cli.command()
 @click.option('--src', required=True, help='Source folder path')

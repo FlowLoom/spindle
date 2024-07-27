@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ct.interfaces import IProcessor
+from spindle.interfaces import IProcessor
 from typing import Any, Dict, List
 import subprocess
 

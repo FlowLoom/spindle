@@ -1,8 +1,8 @@
 import click
-from ct.cli.commands import cli
-from ct.parsers import WebParser
-from ct.processors import WebProcessor
-from ct.handlers import ConsolePrintHandler, FileHandler
+from spindle.cli.commands import cli
+from spindle.parsers import WebParser
+from spindle.processors import WebProcessor
+from spindle.handlers import ConsolePrintHandler, FileHandler
 
 __All__ = ['web']
 
