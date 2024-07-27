@@ -1,4 +1,4 @@
-from spindle.interfaces import IParser, IProcessor
+from spindle.interfaces import IParser, IProcessor, IVisitor
 from abc import abstractmethod
 from typing import Dict, List
 import os
@@ -39,6 +39,9 @@ class AbstractFileParser(IParser):
                 parsed_files[module_path] = content
 
         return parsed_files
+
+    def accept(self, visitor: IVisitor):
+        visitor.visit(self)
 
     @abstractmethod
     def is_valid_file(self, file: str) -> bool:
