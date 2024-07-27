@@ -16,7 +16,7 @@ def cli():
     """
     pass
 
-
+# Add subcommands to the main CLI group
 cli.add_command(code)
 cli.add_command(git)
 cli.add_command(web)
