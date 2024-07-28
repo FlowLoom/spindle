@@ -26,7 +26,7 @@ class IParserFactory(ABC):
         pass
 
     @abstractmethod
-    def create_processor(self) -> IProcessor:
+    def create_processor(self, *args, **kwargs) -> IProcessor:
         """
         Create and return a processor object.
 
