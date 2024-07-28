@@ -1,83 +1,96 @@
-INTRODUCTION
+# Spindle
 
-This project is a versatile command-line interface (CLI) tool designed for parsing and processing various types of data sources, including source code files, git repositories, and web content. It provides a flexible and extensible framework for analyzing and extracting information from different data sources, with support for custom processors, parsers, and output handlers.
+Spindle is a powerful CLI tool for parsing and processing data from various sources including source code, git repositories, and web content. It provides a flexible and extensible architecture for fetching, processing, and handling data with support for multiple output formats and customization options.
 
-INSTALLATION
+## Features
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/drbothen/my_patterns.git
-   cd my_patterns
-   ```
+- Parse and process source code files
+- Fetch and analyze git commit history
+- Extract and process web content
+- Modular architecture with support for custom fetchers, processors, and handlers
+- Multiple output formats including JSON, YAML, and plain text
+- Configurable processing options (e.g., comment removal, line trimming)
+- Extensible design pattern implementation (Factory, Visitor, Decorator)
+- Integration with AI services (OpenAI, Claude, Google AI, Ollama)
 
-2. Install Python 3.7 or higher if not already installed.
+## Installation
 
-3. Create a virtual environment:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-   ```
-
-4. Install the package in editable mode:
-   ```
-   pip install -e .
-   ```
-
-USAGE
-
-The CLI tool provides three main commands: `code`, `git`, and `web`. Here's how to use each of them:
-
-1. Parsing source code files:
-   ```
-   ct code --src /path/to/source --output output.txt
-   ```
-
-2. Parsing git commit messages:
-   ```
-   ct git --repo /path/to/repo --output commits.txt
-   ```
-
-3. Parsing web content:
-   ```
-   ct web --url https://example.com --output web_content.txt
-   ```
-
-Each command has various options for customization. Use the `--help` flag with any command to see all available options:
-
-```
-ct code --help
-ct git --help
-ct web --help
+```bash
+pip install spindle
 ```
 
-Example usage of the main API:
+## Usage
 
-```python
-from ct.parsers import CodeParser
-from ct.processors import FileProcessor
-from ct.handlers import FileHandler
+Spindle provides several command-line interfaces for different data sources:
 
-processor = FileProcessor()
-parser = CodeParser(processor, "/path/to/source", [], [], [".py"])
-parsed_files = parser.parse()
+### Code Parsing
 
-handler = FileHandler("output.txt")
-handler.handle(parsed_files)
+```bash
+spindle code --src /path/to/source --output output.txt --excluded-dirs node_modules,venv --extensions .py,.js
 ```
 
-CONTRIBUTING
+### Git Commit Analysis
 
-- To report issues, please use the GitHub Issues page for this repository.
-- To submit pull requests:
-    1. Fork the repository
-    2. Create a new branch for your feature or bug fix
-    3. Make your changes and commit them with clear, descriptive messages
-    4. Push your changes to your fork
-    5. Create a pull request against the main repository's `main` branch
-- Please follow the project's coding standards and conventions
-- Write unit tests for new features or bug fixes
-- Update documentation as necessary
+```bash
+spindle git --repo /path/to/repo --output commits.json --start 0 --end 100 --extract-ticket
+```
 
-LICENSE
+### Web Content Extraction
 
-This project is licensed under the MIT License. See the `LICENSE` file in the repository for the full license text.
+```bash
+spindle web --url https://example.com --output content.txt --method readability --remove-html
+```
+
+### Fabric Integration
+
+```bash
+spindle fabric process --text "Your input text" --pattern example_pattern --model gpt-4
+```
+
+## Configuration
+
+Spindle uses a configuration file located at `~/.config/spindle/.env`. You can set up API keys and default settings:
+
+```
+OPENAI_API_KEY=your_openai_key
+CLAUDE_API_KEY=your_claude_key
+GOOGLE_API_KEY=your_google_key
+DEFAULT_MODEL=gpt-4-turbo-preview
+```
+
+## Architecture
+
+Spindle follows a modular architecture with the following key components:
+
+- Fetchers: Responsible for retrieving raw data from various sources
+- Processors: Handle the processing and transformation of fetched data
+- Handlers: Manage the output and storage of processed data
+- Factories: Create instances of fetchers, processors, and handlers
+- Decorators: Add additional functionality to fetchers (e.g., logging, timing)
+- Visitors: Implement operations on fetchers without modifying their classes
+
+## Extending Spindle
+
+You can extend Spindle by creating custom fetchers, processors, and handlers:
+
+1. Implement the relevant interface (IFetcher, IProcessor, IHandler)
+2. Create a factory for your new component
+3. Register your factory with the appropriate command in the CLI
+
+## Contributing
+
+Contributions to Spindle are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Implement your changes
+4. Write tests for your new functionality
+5. Submit a pull request
+
+## License
+
+Spindle is released under the MIT License. See the LICENSE file for details.
+
+## Contact
+
+For questions or support, please contact the project maintainer at josh.magady@gmail.com.
