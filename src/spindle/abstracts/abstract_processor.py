@@ -1,7 +1,8 @@
-from typing import Any
 from spindle.interfaces import IProcessor
+from abc import abstractmethod
+from typing import Any
 
-__All__ = ["AbstractProcessor"]
+__All__ = ['AbstractProcessor']
 
 
 class AbstractProcessor(IProcessor):
@@ -16,7 +17,6 @@ class AbstractProcessor(IProcessor):
     def process(self, content: Any) -> Any:
         """
         Process the given content.
-
         This method orchestrates the entire processing workflow.
 
         Args:
@@ -26,56 +26,58 @@ class AbstractProcessor(IProcessor):
             Any: The fully processed content.
         """
         preprocessed = self._preprocess(content)
+        #extracted = self._extract_content(preprocessed)
         processed = self._main_process(preprocessed)
         return self._postprocess(processed)
 
+    @abstractmethod
     def _preprocess(self, content: Any) -> Any:
         """
-        Preprocess the content before main processing.
-
-        This method is intended for any initial cleaning or preparation of the content.
+        Preprocess the content before extraction and main processing.
 
         Args:
             content (Any): The content to be preprocessed.
 
         Returns:
             Any: The preprocessed content.
-
-        Raises:
-            NotImplementedError: If not implemented by a subclass.
         """
-        raise NotImplementedError("_preprocess must be implemented by subclasses")
+        pass
 
+    @abstractmethod
+    def _extract_content(self, content: Any) -> Any:
+        """
+        Extract relevant content from the preprocessed data.
+
+        Args:
+            content (Any): The content to extract from.
+
+        Returns:
+            Any: The extracted content.
+        """
+        pass
+
+    @abstractmethod
     def _main_process(self, content: Any) -> Any:
         """
         Main processing step.
-
-        This method should contain the core processing logic.
 
         Args:
             content (Any): The content to be processed.
 
         Returns:
             Any: The processed content.
-
-        Raises:
-            NotImplementedError: If not implemented by a subclass.
         """
-        raise NotImplementedError("_main_process must be implemented by subclasses")
+        pass
 
+    @abstractmethod
     def _postprocess(self, content: Any) -> Any:
         """
         Postprocess the content after main processing.
-
-        This method is intended for any final adjustments or formatting of the processed content.
 
         Args:
             content (Any): The content to be postprocessed.
 
         Returns:
             Any: The postprocessed content.
-
-        Raises:
-            NotImplementedError: If not implemented by a subclass.
         """
-        raise NotImplementedError("_postprocess must be implemented by subclasses")
+        pass
