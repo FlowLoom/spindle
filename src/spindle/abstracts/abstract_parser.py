@@ -80,7 +80,7 @@ class AbstractParser(IParser):
         """
         pass
 
-    @abstractmethod
+
     def accept(self, visitor: IVisitor) -> None:
         """
         Accept a visitor to perform operations on this parser.
