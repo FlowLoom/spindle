@@ -2,7 +2,6 @@ import click
 from spindle.factories import GitFetcherFactory
 from spindle.config import ConfigManager
 
-__All__ = ['git']
 
 @click.command()
 @click.option('--repo', default='./', required=True, help='Git repository URL or local path')
@@ -12,13 +11,14 @@ __All__ = ['git']
 @click.option('--count', is_flag=True, help='Return the number of commits in the repository')
 @click.option('--hash', help='Return commit by full hash or hash prefix')
 @click.option('--extract-ticket', is_flag=True, help='Extract ticket numbers from commit messages')
-@click.option('--max-length', type=int, default=-1, help='Maximum length of commit messages')
+@click.option('--max-length', type=int, help='Maximum length of commit messages (use 0 for no limit)')
 @click.option('--no-capitalize', is_flag=True, help='Do not capitalize the first word of commit messages')
 @click.option('--stats', '-s', is_flag=True, help='Print statistics about the Git fetcher')
 @click.option('--format', type=click.Choice(['json', 'plaintext']), default='plaintext', help='Output format')
 @click.option('--color', type=click.Choice(['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white']), help='Console output color')
+@click.option('--full-message', is_flag=True, help='Output full commit messages without truncation')
 @click.option('--config', help='Path to the configuration file')
-def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_capitalize, stats, format, color, config):
+def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_capitalize, stats, format, color, full_message, config):
     """
     Parse git commit messages and output their content to a text file or console.
     """
@@ -34,8 +34,14 @@ def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_ca
     # Create and configure the factory
     factory = GitFetcherFactory()
     factory.set_default_extract_ticket_number(extract_ticket)
-    factory.set_default_max_length(max_length)
     factory.set_default_capitalize_first_word(not no_capitalize)
+
+    # Set max_length to None if full_message is True, otherwise use the provided max_length
+    if full_message:
+        max_length = None
+    elif max_length == 0:  # Treat 0 as no limit
+        max_length = None
+    factory.set_default_max_length(max_length)
 
     # Create the fetcher and handler instances
     fetcher = factory.create_fetcher(stats=stats)
