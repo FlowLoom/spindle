@@ -2,6 +2,8 @@ import click
 from spindle.factories import WebFetcherFactory
 from spindle.config import ConfigManager
 from spindle.decorators import TimingFetcherDecorator
+from spindle.handlers import CompositeHandler
+from spindle.exceptions import HandlerException
 
 @click.command()
 @click.option('--url', required=True, help='URL to scrape text from')
@@ -15,63 +17,61 @@ from spindle.decorators import TimingFetcherDecorator
 @click.option('--min-length', type=int, default=0, help='Minimum line length to keep')
 @click.option('--max-length', type=int, default=None, help='Maximum line length (truncates longer lines)')
 @click.option('--metadata/--no-metadata', default=False, help='Extract and include metadata')
-@click.option('--stats', '-s', is_flag=True, help='Print output to console instead of writing to file')
+@click.option('--stats', '-s', is_flag=True, help='Print statistics about the web fetcher')
+@click.option('--format', type=click.Choice(['json', 'plaintext']), default='plaintext', help='Output format')
+@click.option('--color', type=click.Choice(['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white']), help='Console output color')
 @click.option('--config', help='Path to the configuration file')
-def web(url, output, method, remove_html, remove_whitespace, remove_urls,
-        min_length, max_length, metadata, stats, config):
+def web(url: str, output: str, method: str, remove_html: bool, remove_whitespace: bool, remove_urls: bool,
+        min_length: int, max_length: int, metadata: bool, stats: bool, format: str, color: str, config: str):
     """
     Parse web content from a given URL and output the processed content.
     """
-
-    # Load configuration if a config file is specified
-    if config:
-        config_manager = ConfigManager(config)
-        url = config_manager.get('Web', 'url', fallback=url)
-        output = config_manager.get('Web', 'output_file', fallback=output)
-        method = config_manager.get('Web', 'extraction_method', fallback=method)
-        remove_html = config_manager.getboolean('Web', 'remove_html', fallback=remove_html)
-        remove_whitespace = config_manager.getboolean('Web', 'remove_whitespace', fallback=remove_whitespace)
-        remove_urls = config_manager.getboolean('Web', 'remove_urls', fallback=remove_urls)
-        min_length = config_manager.getint('Web', 'min_length', fallback=min_length)
-        max_length = config_manager.getint('Web', 'max_length', fallback=max_length)
-        metadata = config_manager.getboolean('Web', 'extract_metadata', fallback=metadata)
-
-    # Create and configure the factory
-    factory = WebFetcherFactory()
-    factory.set_default_extraction_method(method)
-    factory.set_default_remove_html(remove_html)
-    factory.set_default_remove_excess_whitespace(remove_whitespace)
-    factory.set_default_remove_urls(remove_urls)
-    factory.set_default_min_line_length(min_length)
-    factory.set_default_max_line_length(max_length)
-    factory.set_default_extract_metadata(metadata)
-
-    # Create the parser and handler
-    fetcher = factory.create_fetcher()
-
-    if stats:
-        fetcher = TimingFetcherDecorator(fetcher)
-
-    handler = factory.create_handler(output=output)
-
     try:
-        # Parse the web content
+        # Load configuration if a config file is specified
+        if config:
+            config_manager = ConfigManager(config)
+            url = config_manager.get('Web', 'url', fallback=url)
+            output = config_manager.get('Web', 'output_file', fallback=output)
+            method = config_manager.get('Web', 'extraction_method', fallback=method)
+            remove_html = config_manager.getboolean('Web', 'remove_html', fallback=remove_html)
+            remove_whitespace = config_manager.getboolean('Web', 'remove_whitespace', fallback=remove_whitespace)
+            remove_urls = config_manager.getboolean('Web', 'remove_urls', fallback=remove_urls)
+            min_length = config_manager.getint('Web', 'min_length', fallback=min_length)
+            max_length = config_manager.getint('Web', 'max_length', fallback=max_length)
+            metadata = config_manager.getboolean('Web', 'extract_metadata', fallback=metadata)
+
+        # Create and configure the factory
+        factory = WebFetcherFactory()
+        factory.set_default_extraction_method(method)
+        factory.set_default_remove_html(remove_html)
+        factory.set_default_remove_excess_whitespace(remove_whitespace)
+        factory.set_default_remove_urls(remove_urls)
+        factory.set_default_min_line_length(min_length)
+        factory.set_default_max_line_length(max_length)
+        factory.set_default_extract_metadata(metadata)
+
+        # Create the fetcher
+        fetcher = factory.create_fetcher()
+        if stats:
+            fetcher = TimingFetcherDecorator(fetcher)
+
+        # Create handlers
+        composite_handler = CompositeHandler()
+        if output:
+            file_handler = factory.create_handler('file', format, output_file=output)
+            composite_handler.add_handler(file_handler)
+        console_handler = factory.create_handler('console', format, color=color)
+        composite_handler.add_handler(console_handler)
+
+        # Fetch and handle the web content
         parsed_data = fetcher.fetch(url)
+        composite_handler.handle(parsed_data)
 
-        # Handle the parsed data
-        handler.handle(parsed_data)
-
-        click.echo("Web content parsing completed successfully.")
-
-        # If metadata was extracted and we're using console output, display it
-        if metadata and console:
-            if 'metadata' in parsed_data['web_content']:
-                click.echo("\nMetadata:")
-                for key, value in parsed_data['web_content']['metadata'].items():
-                    click.echo(f"{key}: {value}")
+        #click.echo("Web content parsing completed successfully.")
 
     except Exception as e:
         click.echo(f"Error: {str(e)}", err=True)
+        raise click.Abort()
 
 if __name__ == '__main__':
     web()
