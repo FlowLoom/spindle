@@ -17,7 +17,7 @@ class LoggingFetcherDecorator(IFetcher):
     def processor(self) -> IProcessor:
         return self.fetcher.processor
 
-    def fetch(self, source: Any) -> Dict[str, Any]:
+    def fetch(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """
         Execute the fetch process with added logging.
 
@@ -31,15 +31,15 @@ class LoggingFetcherDecorator(IFetcher):
             Prints the start and end of the wrapped fetcher's class name to the console.
         """
         print(f"Starting fetching with {self.fetcher.__class__.__name__}")
-        result = self.fetcher.fetch(source)
+        result = self.fetcher.fetch(*args, **kwargs)
         print(f"Finished fetching with {self.fetcher.__class__.__name__}")
         return result
 
     def _fetch_content(self, source: Any) -> Any:
-        return self.fetcher._fetch_content(source)
+        return self.fetcher._fetch_content(*args, **kwargs)
 
     def _process_content(self, content: Any) -> Any:
-        return self.fetcher._process_content(content)
+        return self.fetcher._process_content(*args, **kwargs)
 
     def _format_output(self, processed_content: Any) -> Dict[str, Any]:
         return self.fetcher._format_output(processed_content)
@@ -58,6 +58,6 @@ def logging_fetcher_decorator(cls: Type[IFetcher]) -> Callable[..., LoggingFetch
     Returns:
         Callable[..., LoggingFetcher]: A function that creates a LoggingFetcher instance.
     """
-    def wrapper(*args: Any, **kwargs: Any) -> LoggingFetcher:
+    def wrapper(*args: Any, **kwargs: Any) -> LoggingFetcherDecorator:
         return LoggingFetcherDecorator(cls(*args, **kwargs))
     return wrapper
