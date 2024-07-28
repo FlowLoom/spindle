@@ -19,35 +19,51 @@ The goals of this exercise are to:
 
 - Analyze the raw code and supporting documentation
 
-    - Start by thoroughly reviewing the provided raw code and any associated documentation. Take note of the main functionalities, key components, and intended usage of the code.
+  - Start by thoroughly reviewing the provided raw code and any associated documentation. Take note of the main functionalities, key components, and intended usage of the code.
 
 - Outline the structure of the README file
 
-    - Create an outline for the README file that includes sections such as Introduction, Installation, Usage, Contributing, License, and any other relevant sections specific to the project.
+  - Create an outline for the README file that includes sections such as Introduction, Getting Started, Installation, Usage, Roadmap, Contributing, License, Contact, and Acknowledgments.
 
 - Draft the Introduction section
 
-    - Write a clear and concise introduction that explains the purpose of the project, its main features, and any relevant background information.
+  - Write a clear and concise introduction that explains the purpose of the project, its main features, and any relevant background information.
 
-- Write the Installation section
+- Write the Getting Started section
 
-    - Provide detailed instructions on how to install and set up the project. Include any necessary prerequisites, dependencies, and configuration steps.
+  - Provide detailed instructions on how to get started with the project, including prerequisites and setup steps.
+
+- Develop the Installation section
+
+  - Provide detailed instructions on how to install and set up the project. Include any necessary prerequisites, dependencies, and configuration steps.
 
 - Develop the Usage section
 
-    - Write a comprehensive guide on how to use the project. Include code examples, command-line instructions, and explanations of key functionalities.
+  - Write a comprehensive guide on how to use the project. Include code examples, command-line instructions, and explanations of key functionalities.
+
+- Create the Roadmap section
+
+  - Outline the future plans for the project, including upcoming features and improvements.
 
 - Create the Contributing section
 
-    - Outline guidelines for contributing to the project. Include information on how to report issues, submit pull requests, and adhere to coding standards.
+  - Outline guidelines for contributing to the project. Include information on how to report issues, submit pull requests, and adhere to coding standards.
 
 - Draft the License section
 
-    - Specify the license under which the project is distributed. Include any relevant legal information and links to the full license text.
+  - Specify the license under which the project is distributed. Include any relevant legal information and links to the full license text.
+
+- Draft the Contact section
+
+  - Provide contact information for the project maintainers or authors.
+
+- Draft the Acknowledgments section
+
+  - Credit any resources, libraries, or contributors that helped in the project.
 
 - Review and refine the README file
 
-    - Carefully review the entire README file for clarity, accuracy, and completeness. Make any necessary revisions to ensure the document is professional and user-friendly.
+  - Carefully review the entire README file for clarity, accuracy, and completeness. Make any necessary revisions to ensure the document is professional and user-friendly.
 
 # OUTPUT
 
@@ -55,49 +71,199 @@ The goals of this exercise are to:
 
 - In an output section called INTRODUCTION, summarize the project's purpose and main features in a set of clear, concise sentences. E.g., This project is a web application that allows users to manage their tasks efficiently and collaboratively.
 
+// Provide getting started instructions
+
+- In an output section called GETTING STARTED, provide detailed instructions on how to get started with the project, including prerequisites and setup steps, e.g.,:
+
+  ### Prerequisites
+
+  This is an example of how to list things you need to use the software and how to install them.
+  * npm
+    ```sh
+    npm install npm@latest -g
+    ```
+
 // Describe the installation process
 
 - In an output section called INSTALLATION, provide detailed installation instructions. Include prerequisites, dependencies, and configuration steps in bullet points, e.g.,:
 
-    1. Clone the repository.
-    2. Install Node.js and npm.
-    3. Run `npm install` to install dependencies.
-    4. Configure environment variables as specified in the `.env.example` file.
+  ### Installation
+
+  1. Get a free API Key at [https://example.com](https://example.com)
+  2. Clone the repo
+     ```sh
+     git clone https://github.com/your_username_/Project-Name.git
+     ```
+  3. Install NPM packages
+     ```sh
+     npm install
+     ```
+  4. Enter your API in `config.js`
+     ```js
+     const API_KEY = 'ENTER YOUR API';
+     ```
 
 // Explain how to use the project
 
 - In an output section called USAGE, create a step-by-step guide on using the project. Include code examples and explanations, e.g.,:
 
-    - To start the development server, run `npm start`.
-    - To run tests, use the `npm test` command.
-    - Example usage of the main API endpoint:
+  ### Usage
 
-      ```javascript
-      fetch('/api/tasks')
-        .then(response => response.json())
-        .then(data => console.log(data));
-      ```
+  To start the development server, run `npm start`.
+
+  To run tests, use the `npm test` command.
+
+  Example usage of the main API endpoint:
+
+    ```javascript
+    fetch('/api/tasks')
+      .then(response => response.json())
+      .then(data => console.log(data));
+    ```
+
+  _For more examples, please refer to the [Documentation](https://example.com)_
+
+// Provide the project roadmap
+
+- In an output section called ROADMAP, outline the future plans for the project, e.g.,:
+
+  ## Roadmap
+
+  - [x] Add Changelog
+  - [x] Add back to top links
+  - [ ] Add Additional Templates w/ Examples
+  - [ ] Add "components" document to easily copy & paste sections of the readme
+  - [ ] Multi-language Support
+    - [ ] Chinese
+    - [ ] Spanish
+
+  See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
 // Provide contributing guidelines
 
 - In an output section called CONTRIBUTING, outline guidelines for contributing. E.g.,:
 
-    - To report issues, use the GitHub Issues page.
-    - To submit pull requests, fork the repository and create a new branch.
-    - Follow the project's coding standards as described in the `CONTRIBUTING.md` file.
+  ## Contributing
+
+  Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+  If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+
+  1. Fork the Project
+  2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+  3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+  4. Push to the Branch (`git push origin feature/AmazingFeature`)
+  5. Open a Pull Request
 
 // Specify the license
 
 - In an output section called LICENSE, specify the project's license. E.g.,:
 
-  This project is licensed under the MIT License - see the `LICENSE` file for details.
+  ## License
+
+  Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+// Provide contact information
+
+- In an output section called CONTACT, provide contact information for the project maintainers or authors. E.g.,:
+
+  ## Contact
+
+  Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+
+  Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+
+// Provide acknowledgments
+
+- In an output section called ACKNOWLEDGMENTS, credit any resources, libraries, or contributors that helped in the project. E.g.,:
+
+  ## Acknowledgments
+
+  Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+
+  * [Choose an Open Source License](https://choosealicense.com)
+  * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+  * [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
+  * [Malven's Grid Cheatsheet](https://grid.malven.co/)
+  * [Img Shields](https://shields.io)
+  * [GitHub Pages](https://pages.github.com)
+  * [Font Awesome](https://fontawesome.com)
+  * [React Icons](https://react-icons.github.io/react-icons/search)
 
 # POSITIVE EXAMPLES
 
-// Examples to follow
+## Example 1: React Repository README
 
-- One good example: The README file of the [React](https://github.com/facebook/react) repository is well-structured and informative.
-- Another good example: The README file of the [Django](https://github.com/django/django) repository provides clear instructions and useful information.
+# React
+
+[React](https://reactjs.org/) is a JavaScript library for building user interfaces.
+
+## Getting Started
+
+To get started with React, you need to install the create-react-app CLI tool.
+
+```sh
+npx create-react-app my-app
+cd my-app
+npm start
+```
+
+## Documentation
+
+You can find the full documentation for React [here](https://reactjs.org/docs/getting-started.html).
+
+## Contributing
+
+We welcome contributions to React. Please see our [contributing guide](https://reactjs.org/docs/how-to-contribute.html) for more information.
+
+## License
+
+React is MIT licensed.
+
+## Acknowledgments
+
+We'd like to thank all of our contributors and the open source community for their support.
+
+## Example 2: Django Repository README
+
+# Django
+
+[Django](https://www.djangoproject.com/) is a high-level Python web framework that encourages rapid development and clean, pragmatic design.
+
+## Getting Started
+
+To get started with Django, follow these steps:
+
+1. Install Django:
+    ```sh
+    pip install django
+    ```
+2. Create a project:
+    ```sh
+    django-admin startproject myproject
+    ```
+3. Run the development server:
+    ```sh
+    python manage.py runserver
+    ```
+
+## Documentation
+
+The full documentation for Django is available [here](https://docs.djangoproject.com/en/stable/).
+
+## Contributing
+
+We welcome contributions to Django. Please see our [contributing guide](https://docs.djangoproject.com
+
+/en/stable/internals/contributing/) for more information.
+
+## License
+
+Django is licensed under the BSD License.
+
+## Acknowledgments
+
+We'd like to thank the Django Software Foundation and our contributors for their support.
 
 # NEGATIVE EXAMPLES
 
