@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+__All__ = ["IProcessor"]
+
+
 class IProcessor(ABC):
     """
     Interface for a content processor.
