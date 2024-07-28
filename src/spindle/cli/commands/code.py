@@ -19,7 +19,26 @@ def code(src, output, excluded_dirs, excluded_files, extensions, config,
          remove_comments, keep_empty_lines, no_trim, console):
     """
     Parse source code files and output their content to a text file or console.
+
+    This function serves as the main entry point for the code parsing command. It handles
+    configuration loading, input processing, code parsing, and output generation.
+
+    Args:
+        src (str): Source folder path to parse.
+        output (str): Output file path for parsed content.
+        excluded_dirs (str): Comma-separated list of directories to exclude from parsing.
+        excluded_files (str): Comma-separated list of files to exclude from parsing.
+        extensions (str): Comma-separated list of file extensions to include in parsing.
+        config (str): Path to the configuration file.
+        remove_comments (bool): Flag to remove comments from the parsed code.
+        keep_empty_lines (bool): Flag to keep empty lines in the parsed code.
+        no_trim (bool): Flag to prevent trimming whitespace from lines.
+        console (bool): Flag to print output to console instead of writing to file.
+
+    Raises:
+        click.ClickException: If an error occurs during parsing or handling of parsed data.
     """
+
     # Load configuration if a config file is specified
     if config:
         config_manager = ConfigManager(config)
