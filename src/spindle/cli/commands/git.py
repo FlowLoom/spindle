@@ -4,7 +4,7 @@ from spindle.config import ConfigManager
 from spindle.decorators import LoggingFetcherDecorator, TimingFetcherDecorator
 
 @click.command()
-@click.option('--repo', required=True, help='Git repository URL or local path')
+@click.option('--repo', default='./', required=True, help='Git repository URL or local path')
 @click.option('--output', help='Output file path')
 @click.option('--start', type=int, help='Start index for commit range')
 @click.option('--end', type=int, help='End index for commit range')
