@@ -6,3 +6,4 @@ from .abstract_visitor import *
 from .abstract_fetcher_decorator import *
 from .abstract_fetcher import *
 from .abstract_processor import *
+from .abstract_serializer_factory import *
