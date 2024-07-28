@@ -7,8 +7,10 @@ class Setup:
 
     def run(self):
         self._setup_api_keys()
-        self._update_patterns()
-        self._update_shell_configs()
+
+        # TODO: Conduct more tests to ensure the following methods work as expected
+        #self._update_patterns()
+        #self._update_shell_configs()
 
     def _setup_api_keys(self):
         api_keys = {
