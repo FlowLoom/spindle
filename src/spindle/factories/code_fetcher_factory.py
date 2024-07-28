@@ -2,147 +2,62 @@ from spindle.abstracts import AbstractFetcherFactory
 from spindle.fetchers import CodeFetcher
 from spindle.processors import CodeProcessor
 from spindle.handlers import FileHandler, ConsoleHandler
-from spindle.interfaces import IHandler, IProcessor
+from spindle.serializers import ISerializer
+from spindle.factories import SerializerFactory
+from spindle.interfaces import IHandler, IFetcher
 from typing import List, Optional
 
 __All__ = ['CodeFetcherFactory']
 
 
 class CodeFetcherFactory(AbstractFetcherFactory):
-    """
-    A factory class for creating code fetching components.
-
-    This class provides methods to create and configure CodeFetcher instances,
-    along with associated processors and handlers. It also manages default
-    settings for excluded directories, files, and file extensions.
-    """
-
     def __init__(self):
-        """
-        Initialize the CodeFetcherFactory with default settings.
-        """
-
         self.default_excluded_dirs = ['venv', '.git', '__pycache__']
         self.default_excluded_files = ['setup.py', 'requirements.txt']
         self.default_file_extensions = ['.py', '.js', '.html', '.css']
+        self.serializer_factory = SerializerFactory()
 
-    def _create_fetcher(self, *args, **kwargs) -> CodeFetcher:
-        """
-        Create and return a CodeFetcher instance.
+    def _create_fetcher(self, remove_comments: bool = True, remove_empty_lines: bool = True,
+                       trim_lines: bool = True, **kwargs) -> IFetcher:
+        processor = self._create_processor(remove_comments, remove_empty_lines, trim_lines)
+        return CodeFetcher(processor,
+                           self.default_excluded_dirs,
+                           self.default_excluded_files,
+                           self.default_file_extensions)
 
-        Args:
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
+    def _create_handler(self, handler_type: str, format: str = 'plaintext', **kwargs) -> IHandler:
+        serializer = self.serializer_factory.create_serializer(format)
 
-        Returns:
-            CodeParser: An instance of CodeFetcher configured with the specified
-                        or default settings.
-        """
+        if handler_type.lower() == 'file':
+            return FileHandler(serializer, kwargs.get('output_file', 'output.txt'))
+        elif handler_type.lower() == 'console':
+            console_handler = ConsoleHandler(serializer)
+            if 'color' in kwargs:
+                console_handler.set_color(kwargs['color'])
+            return console_handler
+        else:
+            raise ValueError(f"Unsupported handler type: {handler_type}")
 
-        processor = self.create_processor(**kwargs)
-        excluded_dirs = kwargs.get('excluded_dirs', self.default_excluded_dirs)
-        excluded_files = kwargs.get('excluded_files', self.default_excluded_files)
-        file_extensions = kwargs.get('file_extensions', self.default_file_extensions)
-
-        return CodeFetcher(processor, excluded_dirs, excluded_files, file_extensions)
-
-    def _create_processor(self, **kwargs) -> IProcessor:
-        """
-        Create and return a CodeProcessor instance.
-
-        Args:
-            **kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            IProcessor: An instance of CodeProcessor configured with the specified
-                        or default settings.
-        """
-
-        remove_comments = kwargs.get('remove_comments', True)
-        remove_empty_lines = kwargs.get('remove_empty_lines', True)
-        trim_lines = kwargs.get('trim_lines', True)
-
+    def _create_processor(self, remove_comments: bool, remove_empty_lines: bool, trim_lines: bool) -> CodeProcessor:
         return CodeProcessor(remove_comments, remove_empty_lines, trim_lines)
 
-    def _create_handler(self, *args, **kwargs) -> IHandler:
-        """
-        Create and return an appropriate handler instance.
-
-        Args:
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            IHandler: An instance of a concrete handler (ConsolePrintHandler or FileHandler)
-                      based on the provided arguments.
-        """
-
-        if kwargs.get('console') or kwargs.get('con'):
-            return ConsolePrintHandler()
-        elif 'output' in kwargs and kwargs['output'] is not None:
-            return FileHandler(kwargs['output'])
-        else:
-            return ConsolePrintHandler()
-
     def set_default_excluded_dirs(self, dirs: List[str]) -> None:
-        """
-        Set the default excluded directories.
-
-        Args:
-            dirs (List[str]): List of directory names to exclude.
-        """
-
         self.default_excluded_dirs = dirs
 
     def set_default_excluded_files(self, files: List[str]) -> None:
-        """
-        Set the default excluded files.
-
-        Args:
-            files (List[str]): List of file names to exclude.
-        """
-
         self.default_excluded_files = files
 
     def set_default_file_extensions(self, extensions: List[str]) -> None:
-        """
-        Set the default file extensions to include.
-
-        Args:
-            extensions (List[str]): List of file extensions to include.
-        """
-
         self.default_file_extensions = extensions
 
     def add_excluded_dir(self, dir: str) -> None:
-        """
-        Add a directory to the default excluded directories list.
-
-        Args:
-            dir (str): Directory name to exclude.
-        """
-
         if dir not in self.default_excluded_dirs:
             self.default_excluded_dirs.append(dir)
 
     def add_excluded_file(self, file: str) -> None:
-        """
-        Add a file to the default excluded files list.
-
-        Args:
-            file (str): File name to exclude.
-        """
-
         if file not in self.default_excluded_files:
             self.default_excluded_files.append(file)
 
     def add_file_extension(self, extension: str) -> None:
-        """
-        Add a file extension to the default file extensions list.
-
-        Args:
-            extension (str): File extension to include.
-        """
-
         if extension not in self.default_file_extensions:
             self.default_file_extensions.append(extension)
