@@ -1,6 +1,7 @@
 import click
 from spindle.factories import WebFetcherFactory
 from spindle.config import ConfigManager
+from spindle.decorators import TimingFetcherDecorator
 
 @click.command()
 @click.option('--url', required=True, help='URL to scrape text from')
@@ -14,13 +15,14 @@ from spindle.config import ConfigManager
 @click.option('--min-length', type=int, default=0, help='Minimum line length to keep')
 @click.option('--max-length', type=int, default=None, help='Maximum line length (truncates longer lines)')
 @click.option('--metadata/--no-metadata', default=False, help='Extract and include metadata')
-@click.option('--console', '-c', is_flag=True, help='Print output to console instead of writing to file')
+@click.option('--stats', '-s', is_flag=True, help='Print output to console instead of writing to file')
 @click.option('--config', help='Path to the configuration file')
 def web(url, output, method, remove_html, remove_whitespace, remove_urls,
-        min_length, max_length, metadata, console, config):
+        min_length, max_length, metadata, stats, config):
     """
     Parse web content from a given URL and output the processed content.
     """
+
     # Load configuration if a config file is specified
     if config:
         config_manager = ConfigManager(config)
@@ -46,7 +48,11 @@ def web(url, output, method, remove_html, remove_whitespace, remove_urls,
 
     # Create the parser and handler
     fetcher = factory.create_fetcher()
-    handler = factory.create_handler(console=console, output=output)
+
+    if stats:
+        fetcher = TimingFetcherDecorator(fetcher)
+
+    handler = factory.create_handler(output=output)
 
     try:
         # Parse the web content
