@@ -1,19 +1,19 @@
-from spindle.abstracts import AbstractParserFactory
-from spindle.parsers import GitCommitParser
+from spindle.abstracts import AbstractFetcherFactory
+from spindle.fetchers import GitCommitFetcher
 from spindle.processors import GitCommitProcessor
 from spindle.handlers import FileHandler, ConsolePrintHandler
-from spindle.interfaces import IHandler, IProcessor
+from spindle.interfaces import IHandler, IProcessor, IFetcher
 
-__All__ = ['GitParserFactory']
+__All__ = ['GitFetcherFactory']
 
 
-class GitParserFactory(AbstractParserFactory):
+class GitFetcherFactory(AbstractFetcherFactory):
     def __init__(self):
         self.default_extract_ticket_number = False
         self.default_max_length = 72
         self.default_capitalize_first_word = True
 
-    def _create_parser(self, *args, **kwargs) -> GitCommitParser:
+    def _create_fetcher(self, *args, **kwargs) -> IFetcher:
         """
         Create and return a GitCommitParser instance.
 
@@ -25,7 +25,7 @@ class GitParserFactory(AbstractParserFactory):
             GitCommitParser: An instance of GitCommitParser.
         """
         processor = self._create_processor(**kwargs)
-        return GitCommitParser(processor)
+        return GitCommitFetcher(processor)
 
     def _create_processor(self, **kwargs) -> IProcessor:
         """

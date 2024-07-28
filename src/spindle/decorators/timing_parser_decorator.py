@@ -1,29 +1,29 @@
 from typing import Dict, List
-from spindle.abstracts import AbstractParserDecorator
+from spindle.abstracts import AbstractFetcherDecorator
 import time
 
-__All__ = ["TimingParserDecorator"]
+__All__ = ["TimingFetcherDecorator"]
 
 
-class TimingParserDecorator(AbstractParserDecorator):
+class TimingFetcherDecorator(AbstractFetcherDecorator):
     """
-    A decorator class that adds timing functionality to a parser.
+    A decorator class that adds timing functionality to a fetcher.
 
-    This class wraps another parser and measures the time taken to execute
-    its parse method. It inherits from AbstractParserDecorator.
+    This class wraps another fetcher and measures the time taken to execute
+    its fetch method. It inherits from AbstractFetchDecorator.
     """
-    def parse(self) -> Dict[str, List[str]]:
+    def fetch(self) -> Dict[str, List[str]]:
         """
-        Execute the parse method of the wrapped parser and measure its execution time.
+        Execute the fetch method of the wrapped fetcher and measure its execution time.
 
         Returns:
-            Dict[str, List[str]]: The result of the wrapped parser's parse method.
+            Dict[str, List[str]]: The result of the wrapped fetcher's parse method.
 
         Side Effects:
-            Prints the execution time of the wrapped parser's parse method to the console.
+            Prints the execution time of the wrapped fetchers's fetch method to the console.
         """
         start_time = time.time()
         result = super().parse()
         end_time = time.time()
-        print(f"Parsing with {self.wrapped_parser.__class__.__name__} took {end_time - start_time:.2f} seconds")
+        print(f"Parsing with {self.wrapped_fetcher.__class__.__name__} took {end_time - start_time:.2f} seconds")
         return result

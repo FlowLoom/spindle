@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from spindle.interfaces import IParser, IProcessor, IHandler
+from spindle.interfaces import IFetcher, IProcessor, IHandler
 
-__All__ = ['IParserFactory']
+__All__ = ['IFetcherFactory']
 
-
-class IParserFactory(ABC):
+# TODO: Add private methods to the interface
+class IFetcherFactory(ABC):
     """
     Abstract base class defining the interface for a parser factory.
 
@@ -12,9 +12,9 @@ class IParserFactory(ABC):
     """
 
     @abstractmethod
-    def create_parser(self, *args, **kwargs) -> IParser:
+    def create_fetcher(self, *args, **kwargs) -> IFetcher:
         """
-        Create and return a parser object.
+        Create and return a fetcher object.
 
         Args:
             *args: Variable length argument list.

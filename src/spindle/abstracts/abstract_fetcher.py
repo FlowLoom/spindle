@@ -1,13 +1,13 @@
-from spindle.interfaces import IParser, IProcessor, IVisitor
+from spindle.interfaces import IFetcher, IProcessor, IVisitor
 from abc import abstractmethod
 from typing import Any, Dict
 
-__All__ = ['AbstractParser']
+__All__ = ['AbstractFetcher']
 
 
-class AbstractParser(IParser):
+class AbstractFetcher(IFetcher):
     """
-    An abstract base class for parsers that implements the IParser interface.
+    An abstract base class for parsers that implements the IFetcher interface.
 
     This class provides a template for creating parsers with a common structure
     for fetching, extracting, processing, and formatting content from various sources.
@@ -26,7 +26,7 @@ class AbstractParser(IParser):
 
         self.processor = processor
 
-    def parse(self, source: Any) -> Dict[str, Any]:
+    def fetch(self, source: Any) -> Dict[str, Any]:
         """
         Parse the content from the given source.
 

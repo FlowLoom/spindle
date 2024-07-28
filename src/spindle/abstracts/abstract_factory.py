@@ -1,15 +1,15 @@
-from spindle.interfaces.factory_interface import IParserFactory
-from spindle.interfaces.parser_interface import IParser
-from spindle.interfaces.processor_interface import IProcessor
-from spindle.interfaces.handler_interface import IHandler
+from spindle.interfaces import IFetcherFactory
+from spindle.interfaces import IFetcher
+from spindle.interfaces import IProcessor
+from spindle.interfaces import IHandler
 from abc import abstractmethod
 
-__All__ = ['AbstractParserFactory']
+__All__ = ['AbstractFetcherFactory']
 
 
-class AbstractParserFactory(IParserFactory):
-    def create_parser(self, *args, **kwargs) -> IParser:
-        parser = self._create_parser(*args, **kwargs)
+class AbstractFetcherFactory(IFetcherFactory):
+    def create_fetcher(self, *args, **kwargs) -> IFetcher:
+        parser = self._create_fetcher(*args, **kwargs)
         return parser
 
     def create_processor(self, *args, **kwargs) -> IProcessor:
@@ -21,7 +21,7 @@ class AbstractParserFactory(IParserFactory):
         return handler
 
     @abstractmethod
-    def _create_parser(self, *args, **kwargs) -> IParser:
+    def _create_fetcher(self, *args, **kwargs) -> IFetcher:
         pass
 
     @abstractmethod

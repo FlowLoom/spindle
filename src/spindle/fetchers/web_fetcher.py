@@ -1,14 +1,14 @@
 import requests
 from typing import Any, Dict, List
-from spindle.abstracts import AbstractParser
+from spindle.abstracts import AbstractFetcher
 from spindle.interfaces import IProcessor
 
-__All__ = ['WebParser']
+__All__ = ['WebFetcher']
 
 
-class WebParser(AbstractParser):
+class WebFetcher(AbstractFetcher):
     """
-    A parser for web content that inherits from AbstractParser.
+    A fetcher for web content that inherits from AbstractFetcher.
 
     This class provides functionality to fetch, process, and format web content.
     """
@@ -23,9 +23,9 @@ class WebParser(AbstractParser):
 
         super().__init__(processor)
 
-    def parse(self, source: str) -> Dict[str, List[str]]:
+    def fetch(self, source: str) -> Dict[str, List[str]]:
         """
-        Parse web content from a given source URL.
+        Fetch web content from a given source URL.
 
         Args:
             source (str): The URL of the web content to parse.

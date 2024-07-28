@@ -1,43 +1,41 @@
-# In spindle/factories/code_parser_factory.py
-
-from spindle.abstracts import AbstractParserFactory
-from spindle.parsers import CodeParser
+from spindle.abstracts import AbstractFetcherFactory
+from spindle.fetchers import CodeFetcher
 from spindle.processors import CodeProcessor
 from spindle.handlers import FileHandler, ConsolePrintHandler
 from spindle.interfaces import IHandler, IProcessor
 from typing import List, Optional
 
-__All__ = ['CodeParserFactory']
+__All__ = ['CodeFetcherFactory']
 
 
-class CodeParserFactory(AbstractParserFactory):
+class CodeFetcherFactory(AbstractFetcherFactory):
     """
-    A factory class for creating code parsing components.
+    A factory class for creating code fetching components.
 
-    This class provides methods to create and configure CodeParser instances,
+    This class provides methods to create and configure CodeFetcher instances,
     along with associated processors and handlers. It also manages default
     settings for excluded directories, files, and file extensions.
     """
 
     def __init__(self):
         """
-        Initialize the CodeParserFactory with default settings.
+        Initialize the CodeFetcherFactory with default settings.
         """
 
         self.default_excluded_dirs = ['venv', '.git', '__pycache__']
         self.default_excluded_files = ['setup.py', 'requirements.txt']
         self.default_file_extensions = ['.py', '.js', '.html', '.css']
 
-    def _create_parser(self, *args, **kwargs) -> CodeParser:
+    def _create_fetcher(self, *args, **kwargs) -> CodeFetcher:
         """
-        Create and return a CodeParser instance.
+        Create and return a CodeFetcher instance.
 
         Args:
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
 
         Returns:
-            CodeParser: An instance of CodeParser configured with the specified
+            CodeParser: An instance of CodeFetcher configured with the specified
                         or default settings.
         """
 
@@ -46,7 +44,7 @@ class CodeParserFactory(AbstractParserFactory):
         excluded_files = kwargs.get('excluded_files', self.default_excluded_files)
         file_extensions = kwargs.get('file_extensions', self.default_file_extensions)
 
-        return CodeParser(processor, excluded_dirs, excluded_files, file_extensions)
+        return CodeFetcher(processor, excluded_dirs, excluded_files, file_extensions)
 
     def _create_processor(self, **kwargs) -> IProcessor:
         """

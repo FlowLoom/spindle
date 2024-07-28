@@ -1,17 +1,18 @@
-# In spindle/parsers/git_commit_parser.py
-
 from typing import Any, Dict, List, Optional, Union
 from git import Repo, Commit
-from spindle.abstracts import AbstractParser
+from spindle.abstracts import AbstractFetcher
 from spindle.interfaces import IProcessor, IVisitor
 
-class GitCommitParser(AbstractParser):
+__all__ = ['GitCommitFetcher']
+
+
+class GitCommitFetcher(AbstractFetcher):
     def __init__(self, processor: IProcessor):
         super().__init__(processor)
 
-    def parse(self, source: str, start: Optional[int] = None, end: Optional[int] = None) -> Dict[str, List[Dict[str, Any]]]:
+    def fetch(self, source: str, start: Optional[int] = None, end: Optional[int] = None) -> Dict[str, List[Dict[str, Any]]]:
         """
-        Parse git commit messages from the given repository.
+        Fetch git commit messages from the given repository.
 
         Args:
             source (str): Path to the git repository.

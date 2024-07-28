@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Type, List
-from spindle.interfaces import IProcessor, IParser, IHandler
+from spindle.interfaces import IProcessor, IFetcher, IHandler
 
 __All__ = ["ICerebro"]
 
@@ -27,7 +27,7 @@ class ICerebro(ABC):
         pass
 
     @abstractmethod
-    def add_parser(self, parser: Type[IParser]) -> None:
+    def add_fetcher(self, parser: Type[IFetcher]) -> None:
         """
         Add a parser to the Cerebro system.
 

@@ -1,10 +1,10 @@
-from spindle.interfaces import IParser, IVisitor
+from spindle.interfaces import IFetcher, IVisitor
 from typing import Dict, List
 
-__All__ = ['CompositeParser']
+__All__ = ['CompositeFetcher']
 
 
-class CompositeParser(IParser):
+class CompositeParser(IFetcher):
     """
     A composite parser that manages and aggregates results from multiple parsers.
 
@@ -17,7 +17,7 @@ class CompositeParser(IParser):
         """
         Initialize the CompositeParser with an empty list of parsers.
         """
-        self.parsers = []
+        self.fetchers = []
 
     def accept(self, visitor):
         """
@@ -26,8 +26,8 @@ class CompositeParser(IParser):
         Args:
             visitor (IVisitor): The visitor to be accepted by all parsers.
         """
-        for parser in self.parsers:
-            parser.accept(visitor)
+        for fetcher in self.fetchers:
+            fetcher.accept(visitor)
 
     def add(self, parser):
         """
@@ -36,18 +36,18 @@ class CompositeParser(IParser):
         Args:
             parser (IParser): The parser to be added.
         """
-        self.parsers.append(parser)
+        self.fetchers.append(fetcher)
 
-    def remove(self, parser):
+    def remove(self, fetcher):
         """
         Remove a parser from the composite.
 
         Args:
             parser (IParser): The parser to be removed.
         """
-        self.parsers.remove(parser)
+        self.fetcher.remove(fetchers)
 
-    def parse(self) -> Dict[str, List[str]]:
+    def fetch(self) -> Dict[str, List[str]]:
         """
         Parse data using all contained parsers and aggregate the results.
 
@@ -56,6 +56,6 @@ class CompositeParser(IParser):
             from all parsers.
         """
         result = {}
-        for parser in self.parsers:
-            result.update(parser.parse())
+        for fetcher in self.fetchers:
+            result.update(fetcher.fetch())
         return result

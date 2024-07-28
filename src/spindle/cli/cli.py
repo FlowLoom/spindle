@@ -1,7 +1,4 @@
 import click
-from spindle.parsers import CodeParser, GitCommitParser
-from spindle.config import ConfigManager
-from spindle.handlers import ConsolePrintHandler, FileHandler
 from spindle.cli.commands import code, git, web
 
 __all__ = ["cli"]

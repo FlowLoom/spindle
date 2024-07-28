@@ -1,22 +1,25 @@
-from spindle.abstracts import AbstractParserFactory
-from spindle.parsers import WebParser
+from spindle.abstracts import AbstractFetcherFactory
+from spindle.fetchers import WebFetcher
 from spindle.processors import WebProcessor
 from spindle.handlers import FileHandler, ConsolePrintHandler
-from spindle.interfaces import IHandler, IProcessor
+from spindle.interfaces import IHandler, IProcessor, IFetcher
 from typing import Any
 
-class WebParserFactory(AbstractParserFactory):
-    """
-    A factory class for creating web parsing components.
+__ALL__ = ['WebFetcherFactory']
 
-    This class extends AbstractParserFactory to provide specific implementations
-    for web parsing, including methods to create parsers, processors, and handlers.
-    It also allows configuration of default values for various parsing parameters.
+
+class WebFetcherFactory(AbstractFetcherFactory):
+    """
+    A factory class for creating web fetcher components.
+
+    This class extends AbstractFetcherFactory to provide specific implementations
+    for web fetcher, including methods to create fetchering, processors, and handlers.
+    It also allows configuration of default values for various fetching parameters.
     """
 
     def __init__(self):
         """
-        Initialize the WebParserFactory with default configuration values.
+        Initialize the WebFetchFactory with default configuration values.
         """
 
         self.default_extraction_method = 'custom'
@@ -27,9 +30,9 @@ class WebParserFactory(AbstractParserFactory):
         self.default_max_line_length = None
         self.default_extract_metadata = False
 
-    def _create_parser(self, *args, **kwargs) -> WebParser:
+    def _create_fetcher(self, *args, **kwargs) -> IFetcher:
         """
-        Create and return a WebParser instance.
+        Create and return a WebFetcher instance.
 
         Args:
             *args: Variable length argument list.
@@ -39,7 +42,7 @@ class WebParserFactory(AbstractParserFactory):
             WebParser: An instance of WebParser.
         """
         processor = self._create_processor(**kwargs)
-        return WebParser(processor)
+        return WebFetcher(processor)
 
     def _create_processor(self, **kwargs) -> IProcessor:
         """
@@ -144,9 +147,9 @@ class WebParserFactory(AbstractParserFactory):
         """
         self.default_extract_metadata = extract
 
-    def create_parser(self, *args: Any, **kwargs: Any) -> WebParser:
+    def create_fetcher(self, *args: Any, **kwargs: Any) -> WebFetcher:
         """
-        Create and return a WebParser instance.
+        Create and return a WebFetcher instance.
 
         This method overrides the abstract method in the base class to provide
         a more specific return type hint.
@@ -156,9 +159,9 @@ class WebParserFactory(AbstractParserFactory):
             **kwargs: Arbitrary keyword arguments.
 
         Returns:
-            WebParser: An instance of WebParser.
+            WebParser: An instance of WebFetcher.
         """
-        return super().create_parser(*args, **kwargs)
+        return super().create_fetcher(*args, **kwargs)
 
     def create_processor(self, *args: Any, **kwargs: Any) -> WebProcessor:
         """

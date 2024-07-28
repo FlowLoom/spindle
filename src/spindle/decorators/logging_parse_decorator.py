@@ -1,31 +1,31 @@
-from spindle.abstracts import AbstractParserDecorator
+from spindle.abstracts import AbstractFetcherDecorator
 from typing import Dict, List
 
-__All__ = ["LoggingParserDecorator"]
+__All__ = ["LoggingFetcherDecorator"]
 
 
-class LoggingParserDecorator(AbstractParserDecorator):
+class LoggingFetcherDecorator(AbstractFetcherDecorator):
     """
-    A decorator class that adds logging functionality to a parser.
+    A decorator class that adds logging functionality to a fetcher.
 
     This class extends AbstractParserDecorator to provide logging before and after
-    the parsing process.
+    the fetching process.
     """
 
-    def parse(self) -> Dict[str, List[str]]:
+    def fetch(self) -> Dict[str, List[str]]:
         """
-        Execute the parsing process with added logging.
+        Execute the fetch process with added logging.
 
-        This method wraps the parse method of the decorated parser with log messages
-        indicating the start and end of the parsing process.
+        This method wraps the fetch method of the decorated fetcher with log messages
+        indicating the start and end of the fetching process.
 
         Returns:
-            Dict[str, List[str]]: The result of the parsing process.
+            Dict[str, List[str]]: The result of the fetching process.
 
         Side Effects:
-            Prints the prints the start and end of the wrapped parser's class name to the console.
+            Prints the prints the start and end of the wrapped fetcher's class name to the console.
         """
-        print(f"Starting parsing with {self.wrapped_parser.__class__.__name__}")
-        result = super().parse()
-        print(f"Finished parsing with {self.wrapped_parser.__class__.__name__}")
+        print(f"Starting fetching with {self.wrapped_fetcher.__class__.__name__}")
+        result = super().fetch()
+        print(f"Finished fetching with {self.wrapped_fetcher.__class__.__name__}")
         return result

@@ -1,5 +1,5 @@
 import click
-from spindle.factories import GitParserFactory
+from spindle.factories import GitFetcherFactory
 from spindle.config import ConfigManager
 
 @click.command()
@@ -48,30 +48,30 @@ def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_ca
         no_capitalize = config_manager.getboolean('Git', 'no_capitalize', fallback=no_capitalize)
 
     # Create and configure the factory
-    factory = GitParserFactory()
+    factory = GitFetcherFactory()
     factory.set_default_extract_ticket_number(extract_ticket)
     factory.set_default_max_length(max_length)
     factory.set_default_capitalize_first_word(not no_capitalize)
 
     # Create the parser
-    parser = factory.create_parser()
+    fetcher = factory.create_fetcher()
 
     try:
         if count:
             # Get and display the total number of commits
-            commit_count = parser.get_commit_count(repo)
+            commit_count = fetcher.get_commit_count(repo)
             click.echo(f"Total commits: {commit_count}")
             return
 
         if hash:
             # Retrieve a specific commit by hash
-            commit_data = parser.get_commit_by_hash(repo, hash)
+            commit_data = fetcher.get_commit_by_hash(repo, hash)
             if not commit_data:
                 click.echo(f"No commit found with hash: {hash}")
                 return
         else:
             # Parse commits within the specified range
-            commit_data = parser.parse(repo, start, end)
+            commit_data = fetcher.fetch(repo, start, end)
 
         # Create appropriate handler and process the parsed data
         handler = factory.create_handler(console=console, output=output)

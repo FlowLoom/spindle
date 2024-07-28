@@ -1,5 +1,5 @@
 import click
-from spindle.factories import WebParserFactory
+from spindle.factories import WebFetcherFactory
 from spindle.config import ConfigManager
 
 @click.command()
@@ -35,7 +35,7 @@ def web(url, output, method, remove_html, remove_whitespace, remove_urls,
         metadata = config_manager.getboolean('Web', 'extract_metadata', fallback=metadata)
 
     # Create and configure the factory
-    factory = WebParserFactory()
+    factory = WebFetcherFactory()
     factory.set_default_extraction_method(method)
     factory.set_default_remove_html(remove_html)
     factory.set_default_remove_excess_whitespace(remove_whitespace)
@@ -45,12 +45,12 @@ def web(url, output, method, remove_html, remove_whitespace, remove_urls,
     factory.set_default_extract_metadata(metadata)
 
     # Create the parser and handler
-    parser = factory.create_parser()
+    fetcher = factory.create_fetcher()
     handler = factory.create_handler(console=console, output=output)
 
     try:
         # Parse the web content
-        parsed_data = parser.parse(url)
+        parsed_data = fetcher.fetch(url)
 
         # Handle the parsed data
         handler.handle(parsed_data)

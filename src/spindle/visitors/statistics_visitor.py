@@ -1,7 +1,7 @@
 from spindle.abstracts.abstract_visitor import AbstractVisitor
-from spindle.parsers.code_parser import CodeParser
-from spindle.parsers.git_commit_parser import GitCommitParser
-from spindle.parsers.web_parser import WebParser
+from spindle.fetchers.code_fetcher import CodeParser
+from spindle.fetchers.git_commit_parser import GitCommitParser
+from spindle.fetchers.web_parser import WebParser
 
 __All__ = ['StatisticsVisitor']
 

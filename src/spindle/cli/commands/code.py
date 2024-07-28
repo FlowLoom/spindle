@@ -1,7 +1,5 @@
-# In spindle/cli/commands/code.py
-
 import click
-from spindle.factories import CodeParserFactory
+from spindle.factories import CodeFetcherFactory
 from spindle.config import ConfigManager
 
 @click.command()
@@ -54,13 +52,13 @@ def code(src, output, excluded_dirs, excluded_files, extensions, config,
     file_extensions = [e.strip() for e in extensions.split(',') if e.strip()]
 
     # Create and configure the factory
-    factory = CodeParserFactory()
+    factory = CodeFetcherFactory()
     factory.set_default_excluded_dirs(excluded_dirs)
     factory.set_default_excluded_files(excluded_files)
     factory.set_default_file_extensions(file_extensions)
 
     # Create the parser
-    parser = factory.create_parser(
+    fetcher = factory.create_fetcher(
         remove_comments=remove_comments,
         remove_empty_lines=not keep_empty_lines,
         trim_lines=not no_trim
@@ -68,7 +66,7 @@ def code(src, output, excluded_dirs, excluded_files, extensions, config,
 
     # Parse the source code
     try:
-        parsed_data = parser.parse(src)
+        parsed_data = fetcher.fetch(src)
     except Exception as e:
         click.echo(f"Error parsing source code: {str(e)}", err=True)
         return

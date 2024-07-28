@@ -3,16 +3,29 @@ from typing import Any, Dict, List
 from .visitable_interface import IVisitable
 from .visitor_interface import IVisitor
 
-__All__ = ["IParser"]
+__All__ = ["IFetcher"]
 
 
-class IParser(IVisitable):
+class IFetcher(IVisitable):
     """
-    Abstract base class defining the interface for parser implementations.
+    Abstract base class defining the interface for Fetcher implementations.
 
     This class inherits from IVisitable, allowing parser instances to be part of a visitor pattern.
     It defines the abstract methods that concrete parser classes must implement.
     """
+
+    @abstractmethod
+    def fetch(self, source: Any) -> Any:
+        """
+        Parse the content from the given source.
+
+        Args:
+            source (Any): The source to be parsed (e.g., file path, URL, repo path)
+
+        Returns:
+            Any: Any containing the Fetch content
+        """
+        pass
 
     @abstractmethod
     def _fetch_content(self, source: Any) -> Any:

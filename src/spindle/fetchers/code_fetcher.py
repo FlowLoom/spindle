@@ -1,9 +1,9 @@
 import os
 from typing import Any, Dict, List
-from spindle.abstracts import AbstractParser
+from spindle.abstracts import AbstractFetcher
 from spindle.interfaces import IProcessor, IVisitor
 
-class CodeParser(AbstractParser):
+class CodeFetcher(AbstractFetcher):
     def __init__(self, processor: IProcessor, excluded_dirs: List[str], excluded_files: List[str], file_extensions: List[str]):
         super().__init__(processor)
         self.excluded_dirs = excluded_dirs
