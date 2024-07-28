@@ -1,6 +1,7 @@
 import click
 from spindle.factories import GitFetcherFactory
 from spindle.config import ConfigManager
+from spindle.decorators import LoggingFetcherDecorator, TimingFetcherDecorator
 
 @click.command()
 @click.option('--repo', required=True, help='Git repository URL or local path')
@@ -12,9 +13,9 @@ from spindle.config import ConfigManager
 @click.option('--extract-ticket', is_flag=True, help='Extract ticket numbers from commit messages')
 @click.option('--max-length', type=int, default=72, help='Maximum length of commit messages')
 @click.option('--no-capitalize', is_flag=True, help='Do not capitalize the first word of commit messages')
-@click.option('--console', '-c', is_flag=True, help='Print output to console instead of writing to file')
+@click.option('--stats', '-s', is_flag=True, help='Print statistics about the Git fetcher')
 @click.option('--config', help='Path to the configuration file')
-def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_capitalize, console, config):
+def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_capitalize, stats, config):
     """
     Parse git commit messages and output their content to a text file or console.
 
@@ -53,8 +54,11 @@ def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_ca
     factory.set_default_max_length(max_length)
     factory.set_default_capitalize_first_word(not no_capitalize)
 
-    # Create the parser
+    # Create the fetcher instance
     fetcher = factory.create_fetcher()
+
+    if stats:
+        fetcher = TimingFetcherDecorator(fetcher)
 
     try:
         if count:
@@ -74,7 +78,7 @@ def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_ca
             commit_data = fetcher.fetch(repo, start, end)
 
         # Create appropriate handler and process the parsed data
-        handler = factory.create_handler(console=console, output=output)
+        handler = factory.create_handler(output=output)
         handler.handle(commit_data)
 
         click.echo("Git commit parsing completed successfully.")
