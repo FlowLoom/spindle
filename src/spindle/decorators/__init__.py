@@ -1,2 +1,2 @@
-from .logging_parse_decorator import *
-from .timing_parser_decorator import *
+from .logging_fetcher_decorator import *
+from .timing_fetcher_decorator import *
