@@ -1,5 +1,6 @@
 from typing import Dict, Any
 from spindle.exceptions import SerializationException
+from spindle.interfaces import ISerializer
 
 _All_ = ["PlainTextSerializer"]
 
