@@ -6,7 +6,7 @@ __All__ = ["GitCommitProcessor"]
 
 
 class GitCommitProcessor(AbstractProcessor):
-    def __init__(self, extract_ticket_number: bool = False, max_length: int = 72, capitalize_first_word: bool = True):
+    def __init__(self, extract_ticket_number: bool = False, max_length: Optional[int] = None, capitalize_first_word: bool = True):
         self.extract_ticket_number = extract_ticket_number
         self.max_length = max_length
         self.capitalize_first_word = capitalize_first_word
@@ -25,26 +25,18 @@ class GitCommitProcessor(AbstractProcessor):
         return [commit.message.strip() for commit in commits]
 
     def _main_process(self, commit_messages: List[str]) -> List[Dict[str, Any]]:
-        """
-        Main processing step for the git commit messages.
-        """
         processed_commits = []
         for message in commit_messages:
             processed_commit = {"message": message}
-
             if self.extract_ticket_number:
                 ticket_number = self._extract_ticket_number(message)
                 if ticket_number:
                     processed_commit["ticket_number"] = ticket_number
-
-            if len(message) > self.max_length:
+            if self.max_length is not None and len(message) > self.max_length:
                 processed_commit["message"] = message[:self.max_length] + "..."
-
             if self.capitalize_first_word:
                 processed_commit["message"] = self._capitalize_first_word(processed_commit["message"])
-
             processed_commits.append(processed_commit)
-
         return processed_commits
 
     def _postprocess(self, processed_commits: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
