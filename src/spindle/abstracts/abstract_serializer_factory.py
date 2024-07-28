@@ -16,3 +16,5 @@ class AbstractSerializerFactory(ISerializerFactory):
     def _configure_serializer(self, serializer: ISerializer) -> ISerializer:
         # Default implementation does no additional configuration
         return serializer
+
+
