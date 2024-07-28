@@ -26,7 +26,7 @@ class AbstractFetcher(IFetcher):
 
         self.processor = processor
 
-    def fetch(self, source: Any) -> Dict[str, Any]:
+    def fetch(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """
         Parse the content from the given source.
 
@@ -36,9 +36,13 @@ class AbstractFetcher(IFetcher):
         Returns:
             Dict[str, Any]: A dictionary containing the parsed content
         """
+
+        source = args[0] if args else kwargs.get('source')
+
         raw_content = self._fetch_content(source)
         processed_content = self._process_content(raw_content)
         return self._format_output(processed_content)
+
 
     @abstractmethod
     def _fetch_content(self, source: Any) -> Any:
