@@ -1,7 +1,8 @@
 import click
 from spindle.factories import GitFetcherFactory
 from spindle.config import ConfigManager
-from spindle.decorators import LoggingFetcherDecorator, TimingFetcherDecorator
+
+__All__ = ['git']
 
 @click.command()
 @click.option('--repo', default='./', required=True, help='Git repository URL or local path')
@@ -11,34 +12,16 @@ from spindle.decorators import LoggingFetcherDecorator, TimingFetcherDecorator
 @click.option('--count', is_flag=True, help='Return the number of commits in the repository')
 @click.option('--hash', help='Return commit by full hash or hash prefix')
 @click.option('--extract-ticket', is_flag=True, help='Extract ticket numbers from commit messages')
-@click.option('--max-length', type=int, default=72, help='Maximum length of commit messages')
+@click.option('--max-length', type=int, default=-1, help='Maximum length of commit messages')
 @click.option('--no-capitalize', is_flag=True, help='Do not capitalize the first word of commit messages')
 @click.option('--stats', '-s', is_flag=True, help='Print statistics about the Git fetcher')
+@click.option('--format', type=click.Choice(['json', 'plaintext']), default='plaintext', help='Output format')
+@click.option('--color', type=click.Choice(['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white']), help='Console output color')
 @click.option('--config', help='Path to the configuration file')
-def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_capitalize, stats, config):
+def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_capitalize, stats, format, color, config):
     """
     Parse git commit messages and output their content to a text file or console.
-
-    This function serves as the main entry point for the Git commit parsing tool. It handles
-    various options for customizing the parsing process and output format.
-
-    Args:
-        repo (str): Git repository URL or local path.
-        output (str): Output file path for writing parsed commit messages.
-        start (int): Start index for commit range.
-        end (int): End index for commit range.
-        count (bool): Flag to return the number of commits in the repository.
-        hash (str): Full hash or hash prefix to return a specific commit.
-        extract_ticket (bool): Flag to extract ticket numbers from commit messages.
-        max_length (int): Maximum length of commit messages.
-        no_capitalize (bool): Flag to not capitalize the first word of commit messages.
-        console (bool): Flag to print output to console instead of writing to file.
-        config (str): Path to the configuration file.
-
-    Raises:
-        click.ClickException: If an error occurs during the parsing or processing of Git commits.
     """
-
     # Load configuration if a config file is specified
     if config:
         config_manager = ConfigManager(config)
@@ -54,38 +37,34 @@ def git(repo, output, start, end, count, hash, extract_ticket, max_length, no_ca
     factory.set_default_max_length(max_length)
     factory.set_default_capitalize_first_word(not no_capitalize)
 
-    # Create the fetcher instance
-    fetcher = factory.create_fetcher()
-
-    if stats:
-        fetcher = TimingFetcherDecorator(fetcher)
+    # Create the fetcher and handler instances
+    fetcher = factory.create_fetcher(stats=stats)
+    handler = factory.create_handler(output, format, color)
 
     try:
         if count:
             # Get and display the total number of commits
             commit_count = fetcher.get_commit_count(repo)
-            click.echo(f"Total commits: {commit_count}")
+            handler.handle({"total_commits": commit_count})
             return
 
         if hash:
             # Retrieve a specific commit by hash
             commit_data = fetcher.get_commit_by_hash(repo, hash)
             if not commit_data:
-                click.echo(f"No commit found with hash: {hash}")
+                handler.handle({"error": f"No commit found with hash: {hash}"})
                 return
         else:
             # Parse commits within the specified range
             commit_data = fetcher.fetch(repo, start, end)
 
-        # Create appropriate handler and process the parsed data
-        handler = factory.create_handler(output=output)
+        # Handle the parsed data
         handler.handle(commit_data)
 
-        click.echo("Git commit parsing completed successfully.")
-
+        #click.echo("Git commit parsing completed successfully.")
     except Exception as e:
         # Handle and report any errors that occur during parsing or processing
-        click.echo(f"Error: {str(e)}", err=True)
+        handler.handle({"error": str(e)})
 
 if __name__ == '__main__':
     git()
