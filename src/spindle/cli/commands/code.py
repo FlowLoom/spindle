@@ -1,9 +1,10 @@
 import click
 from spindle.factories import CodeFetcherFactory
 from spindle.config import ConfigManager
+from spindle.decorators import TimingFetcherDecorator
 
 @click.command()
-@click.option('--src', required=True, help='Source folder path')
+@click.option('--src', default='./', required=True, help='Source folder path')
 @click.option('--output', help='Output file path')
 @click.option('--excluded-dirs', default='', help='Comma-separated list of directories to exclude')
 @click.option('--excluded-files', default='', help='Comma-separated list of files to exclude')
@@ -12,9 +13,9 @@ from spindle.config import ConfigManager
 @click.option('--remove-comments', is_flag=True, help='Remove comments from the code')
 @click.option('--keep-empty-lines', is_flag=True, help='Keep empty lines in the code')
 @click.option('--no-trim', is_flag=True, help='Do not trim whitespace from lines')
-@click.option('--console', '-c', is_flag=True, help='Print output to console instead of writing to file')
+@click.option('--stats', '-s', is_flag=True, help='Print statistics about the code fetcher')
 def code(src, output, excluded_dirs, excluded_files, extensions, config,
-         remove_comments, keep_empty_lines, no_trim, console):
+         remove_comments, keep_empty_lines, no_trim, stats):
     """
     Parse source code files and output their content to a text file or console.
 
@@ -64,6 +65,9 @@ def code(src, output, excluded_dirs, excluded_files, extensions, config,
         trim_lines=not no_trim
     )
 
+    if stats:
+        fetcher = TimingFetcherDecorator(fetcher)
+
     # Parse the source code
     try:
         parsed_data = fetcher.fetch(src)
@@ -72,7 +76,7 @@ def code(src, output, excluded_dirs, excluded_files, extensions, config,
         return
 
     # Create appropriate handler and process the parsed data
-    handler = factory.create_handler(console=console, output=output)
+    handler = factory.create_handler(output=output)
     try:
         handler.handle(parsed_data)
     except Exception as e:
