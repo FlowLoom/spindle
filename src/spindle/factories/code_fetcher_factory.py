@@ -1,7 +1,7 @@
 from spindle.abstracts import AbstractFetcherFactory
 from spindle.fetchers import CodeFetcher
 from spindle.processors import CodeProcessor
-from spindle.handlers import FileHandler, ConsolePrintHandler
+from spindle.handlers import FileHandler, ConsoleHandler
 from spindle.interfaces import IHandler, IProcessor
 from typing import List, Optional
 

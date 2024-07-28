@@ -1,7 +1,7 @@
 from spindle.abstracts import AbstractFetcherFactory
 from spindle.fetchers import GitCommitFetcher
 from spindle.processors import GitCommitProcessor
-from spindle.handlers import FileHandler, ConsolePrintHandler
+from spindle.handlers import FileHandler, ConsoleHandler
 from spindle.interfaces import IHandler, IProcessor, IFetcher
 
 __All__ = ['GitFetcherFactory']
@@ -61,11 +61,11 @@ class GitFetcherFactory(AbstractFetcherFactory):
         """
 
         if kwargs.get('console') or kwargs.get('con'):
-            return ConsolePrintHandler()
+            return ConsoleHandler()
         elif 'output' in kwargs and kwargs['output'] is not None:
             return FileHandler(kwargs['output'])
         else:
-            return ConsolePrintHandler()
+            return ConsoleHandler()
 
     def set_default_extract_ticket_number(self, extract: bool) -> None:
         """
