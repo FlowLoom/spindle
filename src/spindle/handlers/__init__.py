@@ -1,2 +1,2 @@
-from .console_print_handler import ConsolePrintHandler
+from .console_handler import *
 from .file_handler import *
