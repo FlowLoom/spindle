@@ -9,25 +9,25 @@ __All__ = ['AbstractParserFactory']
 
 class AbstractParserFactory(IParserFactory):
     def create_parser(self, *args, **kwargs) -> IParser:
-        parser = self._create_concrete_parser(*args, **kwargs)
+        parser = self._create_parser(*args, **kwargs)
         return parser
 
-    def create_processor(self) -> IProcessor:
-        processor = self._create_concrete_processor()
+    def create_processor(self, *args, **kwargs) -> IProcessor:
+        processor = self._create_processor(*args, **kwargs)
         return processor
 
     def create_handler(self, *args, **kwargs) -> IHandler:
-        handler = self._create_concrete_handler(*args, **kwargs)
+        handler = self._create_handler(*args, **kwargs)
         return handler
 
     @abstractmethod
-    def _create_concrete_parser(self, *args, **kwargs) -> IParser:
+    def _create_parser(self, *args, **kwargs) -> IParser:
         pass
 
     @abstractmethod
-    def _create_concrete_processor(self) -> IProcessor:
+    def _create_processor(self, *args, **kwargs) -> IProcessor:
         pass
 
     @abstractmethod
-    def _create_concrete_handler(self, *args, **kwargs) -> IHandler:
+    def _create_handler(self, *args, **kwargs) -> IHandler:
         pass
