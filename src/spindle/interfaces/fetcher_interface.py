@@ -15,15 +15,16 @@ class IFetcher(IVisitable):
     """
 
     @abstractmethod
-    def fetch(self, source: Any) -> Any:
+    def fetch(self, *args: Any, **kwargs: Any) -> Any:
         """
-        Parse the content from the given source.
+        Fetch content from the given source.
 
         Args:
-            source (Any): The source to be parsed (e.g., file path, URL, repo path)
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
-            Any: Any containing the Fetch content
+            Dict[str, Any]: A dictionary containing the fetched content.
         """
         pass
 
@@ -54,7 +55,7 @@ class IFetcher(IVisitable):
         pass
 
     @abstractmethod
-    def _format_output(self, processed_content: Any) -> Dict[str, Any]:
+    def _format_output(self, processed_content: Any) -> Any:
         """
         Format the processed content into the expected output structure.
 
