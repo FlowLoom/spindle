@@ -1,19 +1,19 @@
-from spindle.abstracts.abstract_factory import AbstractParserFactory
+from spindle.abstracts import AbstractParserFactory
 from spindle.parsers import GitCommitParser
-from spindle.processors import DummyProcessor
-from spindle.handlers import ConsolePrintHandler
+from spindle.processors import GitCommitProcessor
+from spindle.handlers import FileHandler, ConsolePrintHandler
+from spindle.interfaces import IHandler, IProcessor
 
 __All__ = ['GitParserFactory']
 
 
 class GitParserFactory(AbstractParserFactory):
-    """
-    A concrete factory for creating Git-related parsing components.
+    def __init__(self):
+        self.default_extract_ticket_number = False
+        self.default_max_length = 72
+        self.default_capitalize_first_word = True
 
-    This factory implements the AbstractParserFactory interface to create
-    specific instances of parser, processor, and handler for Git operations.
-    """
-    def _create_concrete_parser(self, *args, **kwargs) -> GitCommitParser:
+    def _create_parser(self, *args, **kwargs) -> GitCommitParser:
         """
         Create and return a GitCommitParser instance.
 
@@ -22,29 +22,74 @@ class GitParserFactory(AbstractParserFactory):
             **kwargs: Arbitrary keyword arguments.
 
         Returns:
-            GitCommitParser: An instance of GitCommitParser with the created processor.
+            GitCommitParser: An instance of GitCommitParser.
         """
-        return GitCommitParser(self.create_processor(), *args, **kwargs)
+        processor = self._create_processor(**kwargs)
+        return GitCommitParser(processor)
 
-    def _create_concrete_processor(self) -> DummyProcessor:
+    def _create_processor(self, **kwargs) -> IProcessor:
         """
-        Create and return a DummyProcessor instance.
+        Create and return a GitCommitProcessor instance.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
-            DummyProcessor: An instance of DummyProcessor.
+            IProcessor: An instance of GitCommitProcessor.
         """
-        return DummyProcessor()
+        extract_ticket_number = kwargs.get('extract_ticket_number', self.default_extract_ticket_number)
+        max_length = kwargs.get('max_length', self.default_max_length)
+        capitalize_first_word = kwargs.get('capitalize_first_word', self.default_capitalize_first_word)
 
-    def _create_concrete_handler(self, *args, **kwargs) -> ConsolePrintHandler:
+        return GitCommitProcessor(
+            extract_ticket_number=extract_ticket_number,
+            max_length=max_length,
+            capitalize_first_word=capitalize_first_word
+        )
+
+    def _create_handler(self, *args, **kwargs) -> IHandler:
         """
-        Create and return a ConsolePrintHandler instance.
+        Create and return an appropriate handler instance.
 
         Args:
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
 
         Returns:
-            ConsolePrintHandler: An instance of ConsolePrintHandler.
+            IHandler: An instance of a concrete handler (ConsolePrintHandler or FileHandler)
+                      based on the provided arguments.
         """
-        return ConsolePrintHandler()
 
+        if kwargs.get('console') or kwargs.get('con'):
+            return ConsolePrintHandler()
+        elif 'output' in kwargs and kwargs['output'] is not None:
+            return FileHandler(kwargs['output'])
+        else:
+            return ConsolePrintHandler()
+
+    def set_default_extract_ticket_number(self, extract: bool) -> None:
+        """
+        Set the default value for extracting ticket numbers.
+
+        Args:
+            extract (bool): Whether to extract ticket numbers by default.
+        """
+        self.default_extract_ticket_number = extract
+
+    def set_default_max_length(self, length: int) -> None:
+        """
+        Set the default maximum length for commit messages.
+
+        Args:
+            length (int): The default maximum length.
+        """
+        self.default_max_length = length
+
+    def set_default_capitalize_first_word(self, capitalize: bool) -> None:
+        """
+        Set the default value for capitalizing the first word.
+
+        Args:
+            capitalize (bool): Whether to capitalize the first word by default.
+        """
+        self.default_capitalize_first_word = capitalize
