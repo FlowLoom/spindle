@@ -9,8 +9,8 @@ __All__ = ['AbstractFetcherFactory']
 
 class AbstractFetcherFactory(IFetcherFactory):
     def create_fetcher(self, *args, **kwargs) -> IFetcher:
-        parser = self._create_fetcher(*args, **kwargs)
-        return parser
+        fetcher = self._create_fetcher(*args, **kwargs)
+        return fetcher
 
     def create_processor(self, *args, **kwargs) -> IProcessor:
         processor = self._create_processor(*args, **kwargs)
