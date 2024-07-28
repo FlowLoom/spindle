@@ -56,11 +56,6 @@ class AbstractParser(IParser):
         Returns:
             Any: The raw content fetched from the source
 
-        Raises:
-            NotImplementedError: If not implemented by a subclass
-        """
-        raise NotImplementedError("_fetch_content must be implemented by subclasses")
-
     def _extract_content(self, raw_content: Any) -> Any:
         """
         Extract relevant content from raw content.
