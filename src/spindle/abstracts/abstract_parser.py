@@ -55,8 +55,6 @@ class AbstractParser(IParser):
 
         Returns:
             Any: The raw content fetched from the source
-
-    def _extract_content(self, raw_content: Any) -> Any:
         """
         Extract relevant content from raw content.
 
