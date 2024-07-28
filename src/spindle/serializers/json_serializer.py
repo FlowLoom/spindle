@@ -1,6 +1,7 @@
 import json
 from typing import Dict, Any
 from spindle.exceptions import SerializationException
+from spindle.interfaces import ISerializer
 
 __All__ = ["JSONSerializer"]
 
