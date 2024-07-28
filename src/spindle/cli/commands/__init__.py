@@ -9,3 +9,5 @@ def cli():
 from .code import *
 from .git import *
 from .web import *
+from .fabric import *
+
