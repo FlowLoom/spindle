@@ -1,3 +1,4 @@
+# TODO: Rename module to fetcher_factory_interface.py
 from abc import ABC, abstractmethod
 from spindle.interfaces import IFetcher, IProcessor, IHandler
 
