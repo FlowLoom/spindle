@@ -53,7 +53,7 @@ class WebProcessor(AbstractProcessor):
         self.extract_metadata = extract_metadata
         self.available_methods = self._check_dependencies()
 
-    def process(self, content: str) -> Dict[str, Any]:
+    def process(self, content: Any) -> Dict[str, Any]:
         """
         Process the input content using the configured settings.
 
@@ -68,7 +68,7 @@ class WebProcessor(AbstractProcessor):
 
         return super().process(content)
 
-    def _preprocess(self, content: str) -> str:
+    def _preprocess(self, content: Any) -> str:
         """
         Preprocess the raw HTML content by extracting the main content.
 
@@ -135,7 +135,7 @@ class WebProcessor(AbstractProcessor):
 
         return result
 
-    def _extract_content(self, raw_content: str) -> str:
+    def _extract_content(self, raw_content: Any) -> str:
         """
         Extract text from the raw HTML content using the specified method.
 
@@ -229,15 +229,23 @@ class WebProcessor(AbstractProcessor):
         """
 
         soup = BeautifulSoup(raw_content, 'html.parser')
+
+        # Remove script and style elements
         for script in soup(["script", "style"]):
             script.decompose()
+
+        # Try to find the main content area
         article = soup.find('article') or soup.find('div', class_=re.compile('article|content|post'))
+
         if article:
             text = article.get_text()
         else:
+            # If no main content area is found, remove common non-content elements
             for elem in soup(['header', 'nav', 'footer', 'aside']):
                 elem.decompose()
             text = soup.body.get_text()
+
+        # Clean up the extracted text
         lines = (line.strip() for line in text.splitlines())
         chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
         return '\n'.join(chunk for chunk in chunks if chunk)
