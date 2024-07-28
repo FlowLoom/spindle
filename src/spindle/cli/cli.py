@@ -1,5 +1,5 @@
 import click
-from spindle.cli.commands import code, git, web, fabric
+from spindle.cli.commands import code, git, web, fabric, ticket
 
 __all__ = ["cli"]
 
@@ -17,6 +17,7 @@ cli.add_command(code)
 cli.add_command(git)
 cli.add_command(web)
 cli.add_command(fabric)
+cli.add_command(ticket)
 
 
 if __name__ == "__main__":
