@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from spindle.interfaces import IProcessor
+from spindle.interfaces import IProcessor, IParser
 from typing import Any, Dict, List
 import subprocess
 
 __All__ = ["AbstractGitParser"]
 
 
-class AbstractGitParser(ABC):
+class AbstractGitParser(IParser):
     def __init__(self,
                  processor: IProcessor,
                  repo_path: str = None,

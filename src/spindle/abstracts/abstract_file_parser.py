@@ -6,7 +6,7 @@ import logging
 
 __All__ = ["AbstractFileParser"]
 
-
+# TODO: Deprecated; Scheduled for removal in next release.
 class AbstractFileParser(IParser):
     """Abstract class for file parsers."""
     def __init__(

@@ -4,7 +4,7 @@ from typing import List
 
 __All__ = ["AbstractFileProcessor"]
 
-
+# TODO: Deprecated; Scheduled for removal in next release.
 class AbstractFileProcessor(IProcessor):
     """Abstract class for file processors."""
 
