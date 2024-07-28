@@ -1,23 +1,19 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-__All__ = ['IProcessor']
-
 class IProcessor(ABC):
     """
-    An abstract base class defining the interface for content processors.
+    Interface for a content processor.
 
-    This class provides a template for implementing content processing workflows
-    with distinct preprocessing, main processing, and postprocessing steps.
+    This abstract base class defines the structure and workflow for processing content.
+    Concrete implementations should provide specific logic for each processing step.
     """
 
     @abstractmethod
     def process(self, content: Any) -> Any:
         """
         Process the given content.
-
-        This method orchestrates the entire processing workflow by calling
-        _preprocess, _main_process, and _postprocess methods in sequence.
+        This method orchestrates the entire processing workflow.
 
         Args:
             content (Any): The content to be processed.
@@ -25,15 +21,12 @@ class IProcessor(ABC):
         Returns:
             Any: The fully processed content.
         """
-
         pass
 
     @abstractmethod
     def _preprocess(self, content: Any) -> Any:
         """
-        Preprocess the content before main processing.
-
-        This method is intended for any initial cleaning or preparation of the content.
+        Preprocess the content before extraction and main processing.
 
         Args:
             content (Any): The content to be preprocessed.
@@ -41,7 +34,19 @@ class IProcessor(ABC):
         Returns:
             Any: The preprocessed content.
         """
+        pass
 
+    @abstractmethod
+    def _extract_content(self, content: Any) -> Any:
+        """
+        Extract relevant content from the preprocessed data.
+
+        Args:
+            content (Any): The content to extract from.
+
+        Returns:
+            Any: The extracted content.
+        """
         pass
 
     @abstractmethod
@@ -49,15 +54,12 @@ class IProcessor(ABC):
         """
         Main processing step.
 
-        This method should contain the core processing logic.
-
         Args:
             content (Any): The content to be processed.
 
         Returns:
             Any: The processed content.
         """
-
         pass
 
     @abstractmethod
@@ -65,13 +67,10 @@ class IProcessor(ABC):
         """
         Postprocess the content after main processing.
 
-        This method is intended for any final adjustments or formatting of the processed content.
-
         Args:
             content (Any): The content to be postprocessed.
 
         Returns:
             Any: The postprocessed content.
         """
-
         pass
