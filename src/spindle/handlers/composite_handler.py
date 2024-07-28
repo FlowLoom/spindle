@@ -1,27 +1,29 @@
 import logging
 from typing import List, Dict, Any, Union
-from spindle.interfaces import IHandler, ISerializer
+from spindle.interfaces import ISerializer
 from spindle.exceptions import HandlerException
+from spindle.abstracts import AbstractHandler
 
 __All__ = ['CompositeHandler']
 
 
-class CompositeHandler(IHandler):
+class CompositeHandler(AbstractHandler):
     """
     A handler that composes multiple other handlers and delegates operations to them.
     This handler allows for combining multiple output strategies (e.g., file and console output).
     """
 
-    def __init__(self):
-        self.handlers: List[IHandler] = []
+    def __init__(self, serializer: ISerializer = None):
+        super().__init__(serializer)
+        self.handlers: List[AbstractHandler] = []
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def add_handler(self, handler: IHandler) -> None:
+    def add_handler(self, handler: AbstractHandler) -> None:
         """
         Add a handler to the composite.
 
         Args:
-            handler (IHandler): The handler to add.
+            handler (AbstractHandler): The handler to add.
         """
         if handler not in self.handlers:
             self.handlers.append(handler)
@@ -29,12 +31,12 @@ class CompositeHandler(IHandler):
         else:
             self.logger.warning(f"Handler already exists: {handler.__class__.__name__}")
 
-    def remove_handler(self, handler: IHandler) -> None:
+    def remove_handler(self, handler: AbstractHandler) -> None:
         """
         Remove a handler from the composite.
 
         Args:
-            handler (IHandler): The handler to remove.
+            handler (AbstractHandler): The handler to remove.
         """
         if handler in self.handlers:
             self.handlers.remove(handler)
@@ -78,6 +80,19 @@ class CompositeHandler(IHandler):
                 # Optionally, re-raise the exception if you want to stop processing
                 # raise HandlerException(f"Error in handler {handler.__class__.__name__}: {str(e)}") from e
 
+    def preprocess(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Preprocess the data. In this case, we return the data as-is since preprocessing
+        is delegated to individual handlers.
+
+        Args:
+            data (Dict[str, Any]): The data to preprocess.
+
+        Returns:
+            Dict[str, Any]: The preprocessed data.
+        """
+        return data
+
     def get_handler_count(self) -> int:
         """
         Get the number of handlers in the composite.
@@ -110,8 +125,9 @@ class CompositeHandler(IHandler):
         Args:
             serializer (ISerializer): The serializer to set.
         """
+        self.serializer = serializer
         for handler in self.handlers:
-            if hasattr(handler, 'serializer'):
+            if isinstance(handler, AbstractHandler):
                 handler.serializer = serializer
         self.logger.info(f"Set serializer {serializer.__class__.__name__} for all compatible handlers.")
 
@@ -132,7 +148,7 @@ if __name__ == "__main__":
     console_handler = ConsoleHandler(plaintext_serializer)
 
     # Create composite handler
-    composite_handler = CompositeHandler()
+    composite_handler = CompositeHandler(json_serializer)
     composite_handler.add_handler(file_handler)
     composite_handler.add_handler(console_handler)
 
