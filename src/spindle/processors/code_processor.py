@@ -1,121 +1,70 @@
-from typing import List
-import re
 from spindle.abstracts import AbstractProcessor
+from typing import List, Dict, Any
+import re
 
 __All__ = ['CodeProcessor']
 
 
 class CodeProcessor(AbstractProcessor):
-    """
-    A processor for code content that inherits from AbstractProcessor.
-
-    This class provides functionality to process code by removing comments,
-    empty lines, and trimming whitespace based on initialization parameters.
-
-    Attributes:
-        remove_comments (bool): Flag to determine if comments should be removed.
-        remove_empty_lines (bool): Flag to determine if empty lines should be removed.
-        trim_lines (bool): Flag to determine if lines should be trimmed.
-    """
-
-    def __init__(self, remove_comments: bool = True, remove_empty_lines: bool = True, trim_lines: bool = True):
-        """
-        Initialize the CodeProcessor with processing options.
-
-        Args:
-            remove_comments (bool, optional): Whether to remove comments. Defaults to True.
-            remove_empty_lines (bool, optional): Whether to remove empty lines. Defaults to True.
-            trim_lines (bool, optional): Whether to trim whitespace from lines. Defaults to True.
-        """
-
+    def __init__(self,
+                 remove_comments: bool = True,
+                 remove_empty_lines: bool = True,
+                 trim_lines: bool = True,
+                 min_line_length: int = 0,
+                 max_line_length: int = None):
         self.remove_comments = remove_comments
         self.remove_empty_lines = remove_empty_lines
         self.trim_lines = trim_lines
+        self.min_line_length = min_line_length
+        self.max_line_length = max_line_length
 
-    def process(self, content: str) -> List[str]:
+    def _preprocess(self, content: Dict[str, str]) -> Dict[str, str]:
         """
-        Process the given code content.
-
-        This method overrides the superclass method to handle code processing.
-
-        Args:
-            content (str): The code content to be processed.
-
-        Returns:
-            List[str]: The processed code as a list of lines.
+        Preprocess the code content.
+        In this case, we're not doing any preprocessing before extraction.
         """
+        return self._extract_content(content)
 
-        return super().process(content)
-
-    def _preprocess(self, content: str) -> List[str]:
+    def _extract_content(self, content: Dict[str, str]) -> Dict[str, List[str]]:
         """
-        Preprocess the code content by splitting it into lines.
-
-        Args:
-            content (str): The code content to be preprocessed.
-
-        Returns:
-            List[str]: The code split into lines.
+        Extract content by splitting each file's content into lines.
         """
+        return {file_path: content.split('\n') for file_path, content in content.items()}
 
-        return content.splitlines()
-
-    def _main_process(self, lines: List[str]) -> List[str]:
+    def _main_process(self, content: Dict[str, List[str]]) -> Dict[str, List[str]]:
         """
-        Main processing step for the code.
-
-        This method applies the processing options (trimming, comment removal,
-        empty line removal) to each line of code.
-
-        Args:
-            lines (List[str]): The lines of code to be processed.
-
-        Returns:
-            List[str]: The processed lines of code.
+        Main processing step for the code content.
         """
+        processed_content = {}
+        for file_path, lines in content.items():
+            processed_lines = []
+            for line in lines:
+                if self.trim_lines:
+                    line = line.strip()
 
-        processed_lines = []
-        for line in lines:
-            if self.trim_lines:
-                line = line.strip()
+                if self.remove_comments:
+                    line = self._remove_comments(line)
 
-            if self.remove_comments:
-                line = self._remove_comments(line)
+                if (not self.remove_empty_lines or line) and len(line) >= self.min_line_length:
+                    if self.max_line_length and len(line) > self.max_line_length:
+                        line = line[:self.max_line_length] + '...'
+                    processed_lines.append(line)
 
-            if not self.remove_empty_lines or line:
-                processed_lines.append(line)
+            processed_content[file_path] = processed_lines
 
-        return processed_lines
+        return processed_content
 
-    def _postprocess(self, lines: List[str]) -> List[str]:
+    def _postprocess(self, content: Dict[str, List[str]]) -> Dict[str, List[str]]:
         """
-        Postprocess the code lines.
-
-        This method is a placeholder for potential post-processing steps.
-        Currently, it returns the input lines without modification.
-
-        Args:
-            lines (List[str]): The processed lines of code.
-
-        Returns:
-            List[str]: The postprocessed lines of code.
+        Postprocess the code content.
+        In this case, we're just returning the processed content as is.
         """
-
-        return lines
+        return content
 
     def _remove_comments(self, line: str) -> str:
         """
         Remove comments from a line of code.
-
-        This method removes both inline comments and full-line comments.
-
-        Args:
-            line (str): A line of code.
-
-        Returns:
-            str: The line with comments removed.
         """
-
         # Remove inline comments
         line = re.sub(r'#.*$', '', line)
 
@@ -129,15 +78,5 @@ class CodeProcessor(AbstractProcessor):
     def remove_non_ascii(text: str) -> str:
         """
         Remove non-ASCII characters from a string.
-
-        This method encodes the input string to ASCII, ignoring non-ASCII characters,
-        then decodes it back to a string, effectively removing all non-ASCII characters.
-
-        Args:
-            text (str): The input string.
-
-        Returns:
-            str: The input string with all non-ASCII characters removed.
         """
-
         return text.encode("ascii", errors="ignore").decode("ascii")
