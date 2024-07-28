@@ -1,48 +1,23 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List
 from .visitable_interface import IVisitable
+from .visitor_interface import IVisitor
 
 __All__ = ["IParser"]
 
 
 class IParser(IVisitable):
     """
-    An abstract base class for parsing content from various sources.
+    Abstract base class defining the interface for parser implementations.
 
-    This class defines the interface for parsers that can handle different types of sources
-    and extract structured content from them. It inherits from IVisitable, allowing for
-    visitor pattern implementation.
-
-    Methods:
-        parse: Main method to parse content from a given source.
-        _fetch_content: Retrieves raw content from the source.
-        _extract_content: Extracts relevant information from raw content.
-        _process_content: Processes extracted content into a list of strings.
+    This class inherits from IVisitable, allowing parser instances to be part of a visitor pattern.
+    It defines the abstract methods that concrete parser classes must implement.
     """
-
-    @abstractmethod
-    def parse(self, source: Any) -> Dict[str, List[str]]:
-        """
-        Parse the content from the given source.
-
-        This method orchestrates the parsing process by calling the other abstract methods
-        in the appropriate order.
-
-        Args:
-            source (Any): The source to be parsed (e.g., file path, URL, repo path)
-
-        Returns:
-            Dict[str, List[str]]: A dictionary containing the parsed content
-        """
-        pass
 
     @abstractmethod
     def _fetch_content(self, source: Any) -> Any:
         """
         Fetch raw content from the source.
-
-        This method is responsible for retrieving the raw content from the specified source,
-        which could be a file, URL, or repository.
 
         Args:
             source (Any): The source from which to fetch content
@@ -50,41 +25,42 @@ class IParser(IVisitable):
         Returns:
             Any: The raw content fetched from the source
         """
-
         pass
 
     @abstractmethod
-    def _extract_content(self, raw_content: Any) -> Any:
+    def _process_content(self, content: Any) -> Any:
         """
-        Extract relevant content from raw content.
-
-        This method processes the raw content to extract the relevant information needed
-        for further processing.
-
-        Args:
-            raw_content (Any): The raw content to extract from
-
-        Returns:
-            Any: The extracted content
-        """
-
-        pass
-
-    @abstractmethod
-    def _process_content(self, content: Any) -> List[str]:
-        """
-        Process the extracted content.
-
-        This method performs the final processing step, converting the extracted content
-        into a list of strings.
+        Process the content using the associated processor.
 
         Args:
             content (Any): The content to be processed
 
         Returns:
-            List[str]: The processed content as a list of strings
+            Any: The processed content
         """
+        pass
 
+    @abstractmethod
+    def _format_output(self, processed_content: Any) -> Dict[str, Any]:
+        """
+        Format the processed content into the expected output structure.
+
+        Args:
+            processed_content (Any): The processed content to format
+
+        Returns:
+            Dict[str, Any]: The formatted output
+        """
+        pass
+
+    @abstractmethod
+    def accept(self, visitor: IVisitor) -> None:
+        """
+        Accept a visitor to perform operations on this parser.
+
+        Args:
+            visitor (IVisitor): The visitor to accept
+        """
         pass
 
     # Note: The accept method is inherited from IVisitable
