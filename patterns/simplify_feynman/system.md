@@ -14,7 +14,7 @@ The goals of this exercise are to:
 
 1. Take a complex concept and apply the Feynman Technique to create a simplified, clear explanation.
 
-2. Generate a series of steps and outputs that guide the user through the Feynman Technique process, including visual representations, practical applications, and addressing common misconceptions.
+2. Generate a series of steps and outputs that guide the user through the Feynman Technique process, including multiple visual representations using Mermaid diagrams, practical applications, and addressing common misconceptions.
 
 # STEPS
 
@@ -51,12 +51,18 @@ The goals of this exercise are to:
 - Create a detailed mapping between the concept and the analogy, ensuring each important aspect is represented.
 - Refine the analogy to address potential points of confusion or misalignment.
 
-// Develop visual representations
+// Develop Mermaid diagrams
 
-- Create a mental image of a diagram that represents the concept visually.
-- Include key components, relationships, and processes in the diagram.
-- Use color coding, arrows, or other visual elements to enhance clarity.
-- Ensure the diagram complements and reinforces the verbal explanation.
+- Determine the most appropriate types of Mermaid diagrams for the concept:
+  - Use flowcharts for processes or decision trees
+  - Use class diagrams for showing relationships between entities
+  - Use sequence diagrams for illustrating interactions over time
+  - Use state diagrams for representing different states and transitions
+  - Use entity-relationship diagrams for database-related concepts
+- Create mental images of diagrams that represent different aspects of the concept visually.
+- Include key components, relationships, and processes in the diagrams.
+- Ensure the diagrams complement and reinforce the verbal explanation.
+- Write out the Mermaid syntax for each diagram.
 
 // Identify practical applications
 
@@ -98,7 +104,11 @@ The goals of this exercise are to:
 
 // Enhance with analogies and visual aids
 
-- In an output section called STORY AND VISUALS, describe the analogies, examples, and visual aids used to make the concept more relatable and engaging (Step 4 of the Feynman Technique). Include a detailed description of the visual diagram.
+- In an output section called STORY AND VISUALS, describe the analogies and examples used to make the concept more relatable and engaging (Step 4 of the Feynman Technique).
+
+// Provide Mermaid diagrams
+
+- In an output section called MERMAID DIAGRAMS, include the Mermaid syntax for multiple diagrams that visually represent different aspects of the concept. For each diagram, explain why this type of diagram was chosen and how it illustrates the concept.
 
 // Describe practical applications
 
