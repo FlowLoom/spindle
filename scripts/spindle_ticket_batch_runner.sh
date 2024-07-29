@@ -31,10 +31,16 @@ mkdir -p "$dest_dir"
 
 # Initial values
 start=0
-end=5
+batch_size=5
 
 # Loop until start is greater than total
-while [ $start -le $total ]; do
+while [ $start -lt $total ]; do
+    # Calculate the end value for the current batch
+    end=$((start + batch_size))
+    if [ $end -gt $total ]; then
+        end=$total
+    fi
+
     echo "Running command with start=$start and end=$end"
 
     # Generate a timestamp
@@ -43,12 +49,11 @@ while [ $start -le $total ]; do
     # Execute the command with current start and end values, including the timestamp in the output filename
     spindle git --repo="$repo_path" --format=json --output="$dest_dir/tickets_${timestamp}.json" --start=$start --end=$end --full-message | fabric -sp git_tickets_json > "$dest_dir/fab_tickets_${timestamp}.json"
 
-    # Increment start and end values by 5
-    start=$((start + 5))
-    end=$((end + 5))
+    # Increment start value by batch size
+    start=$((start + batch_size))
 done
 
 # Record the repository and last commit index processed
-echo "Repo: $repo_path, Last Commit Index Processed: $((start - 5))" > "$dest_dir/record.txt"
+echo "Repo: $repo_path, Last Commit Index Processed: $((start - batch_size))" > "$dest_dir/record.txt"
 
 echo "Processing complete. Record saved to $dest_dir/record.txt"
