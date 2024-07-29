@@ -1,109 +1,129 @@
+# src/spindle/config/config_manager.py
+
 import os
-from typing import List
-from openai import OpenAI, APIConnectionError
+from typing import Any, Optional, Dict
 from dotenv import load_dotenv
+from spindle.interfaces import IConfigurationManager, IModelProvider
+from spindle.factories import ModelProviderFactory
 
 __All__ = ["ConfigManager"]
 
 
-class ConfigManager:
+class ConfigManager(IConfigurationManager):
     def __init__(self):
         self.config_dir = os.path.expanduser("~/.config/spindle")
         self.env_file = os.path.join(self.config_dir, ".env")
+        self.config: Dict[str, Any] = {}
+        self.model_provider_factory = ModelProviderFactory()
+        self._ensure_config_dir()
+        self.load()
+
+    def _ensure_config_dir(self):
+        """Ensure the configuration directory exists."""
         os.makedirs(self.config_dir, exist_ok=True)
-        self._load_env()
-        self.client = None
-        self.initialize_openai_client()
-        self.args = None  # This should be set after initialization if needed
 
-    def _load_env(self):
-        load_dotenv(self.env_file)
+    def get(self, key: str, default: Optional[Any] = None) -> Any:
+        """Retrieve a configuration value."""
+        return self.config.get(key, default)
 
-    def initialize_openai_client(self):
-        api_key = os.getenv('OPENAI_API_KEY')
-        if api_key:
-            self.client = OpenAI(api_key=api_key)
+    def set(self, key: str, value: Any) -> None:
+        """Set a configuration value."""
+        self.config[key] = value
+        self.save()
 
-    def get(self, key: str, default: str = None) -> str:
-        return os.getenv(key, default)
+    def load(self) -> None:
+        """Load configuration from the .env file."""
+        if os.path.exists(self.env_file):
+            load_dotenv(self.env_file)
+        self.config = dict(os.environ)
 
-    def set(self, key: str, value: str):
-        os.environ[key] = value
-        with open(self.env_file, "a") as f:
-            f.write(f"{key}={value}\n")
+    def save(self) -> None:
+        """Save the current configuration to the .env file."""
+        with open(self.env_file, "w") as f:
+            for key, value in self.config.items():
+                f.write(f"{key}={value}\n")
 
     def get_config_dir(self) -> str:
+        """Get the configuration directory path."""
         return self.config_dir
 
     def get_patterns_dir(self) -> str:
+        """Get the patterns directory path."""
         return os.path.join(self.config_dir, "patterns")
 
-    def get_gpt_models(self) -> List[str]:
-        gptlist = []
-        try:
-            if self.client:
-                models = [model.id.strip() for model in self.client.models.list().data]
-                if "/" in models[0] or "\\" in models[0]:
-                    gptlist = [item[item.rfind("/") + 1:] if "/" in item else item[item.rfind("\\") + 1:] for item in models]
-                else:
-                    gptlist = [item.strip() for item in models if item.startswith("gpt")]
-                gptlist.sort()
-        except APIConnectionError:
-            pass
-        except Exception as e:
-            print(f"Error fetching GPT models: {getattr(e.__context__, 'args', [''])[0]}")
+    def get_all(self) -> Dict[str, Any]:
+        """Get all configuration key-value pairs."""
+        return self.config.copy()
 
-        return gptlist
+    def clear(self) -> None:
+        """Clear all configuration settings."""
+        self.config.clear()
+        self.save()
 
-    def get_claude_models(self) -> List[str]:
-        if os.getenv("CLAUDE_API_KEY"):
-            return [
-                'claude-3-5-sonnet-20240620',
-                'claude-3-opus-20240229',
-                'claude-3-sonnet-20240229',
-                'claude-3-haiku-20240307',
-                'claude-2.1'
-            ]
-        else:
-            return []
+    def exists(self, key: str) -> bool:
+        """Check if a configuration key exists."""
+        return key in self.config
 
-    def get_google_models(self) -> List[str]:
-        googleList = []
-        try:
-            import google.generativeai as genai
-            api_key = os.getenv("GOOGLE_API_KEY")
-            if api_key:
-                genai.configure(api_key=api_key)
-                for m in genai.list_models():
-                    if 'generateContent' in m.supported_generation_methods:
-                        googleList.append(m.name)
-        except ImportError:
-            print("Google GenerativeAI library is not installed.")
-        except Exception as e:
-            print(f"Error fetching Google models: {str(e)}")
+    def get_model_provider(self, provider_type: str, **kwargs) -> Optional[IModelProvider]:
+        """
+        Get a ModelProvider instance for the specified type.
 
-        return googleList
+        Args:
+            provider_type (str): The type of ModelProvider to get.
+            **kwargs: Additional keyword arguments to pass to the ModelProvider constructor.
 
-    def get_ollama_models(self) -> List[str]:
-        fullOllamaList = []
-        try:
-            import ollama
-            remoteOllamaServer = getattr(self.args, 'remoteOllamaServer', None)
+        Returns:
+            Optional[IModelProvider]: An instance of the specified ModelProvider, or None if the type is not recognized.
+        """
+        return self.model_provider_factory.create_provider(provider_type, **kwargs)
 
-            if remoteOllamaServer:
-                client = ollama.Client(host=remoteOllamaServer)
-                default_modelollamaList = client.list()['models']
-            else:
-                default_modelollamaList = ollama.list()['models']
+    def get_available_model_providers(self):
+        """
+        Get a list of all available ModelProvider types.
 
-            for model in default_modelollamaList:
-                fullOllamaList.append(model['name'])
-        except ImportError:
-            print("Ollama library is not installed.")
-        except Exception as e:
-            print(f"Error fetching Ollama models: {str(e)}")
+        Returns:
+            List[str]: A list of available ModelProvider type names.
+        """
+        return self.model_provider_factory.get_available_providers()
 
-        return fullOllamaList
+    def initialize_model_providers(self):
+        """
+        Initialize all model providers and return a dictionary of available models for each provider.
+        """
+        available_models = {}
+        for provider_type in self.get_available_model_providers():
+            provider = self.get_model_provider(provider_type)
+            if provider and provider.is_available():
+                available_models[provider_type] = provider.get_models()
+        return available_models
 
-    def set_args(self, args):
-        self.args = args
+    def validate_model(self, provider_type: str, model_name: str) -> bool:
+        """
+        Validate if a given model is available for a specific provider.
+
+        Args:
+            provider_type (str): The type of ModelProvider to use.
+            model_name (str): The name of the model to validate.
+
+        Returns:
+            bool: True if the model is valid and available, False otherwise.
+        """
+        provider = self.get_model_provider(provider_type)
+        if provider and provider.is_available():
+            return provider.validate_model(model_name)
+        return False
+
+    def get_default_model(self, provider_type: str) -> Optional[str]:
+        """
+        Get the default model for a specific provider.
+
+        Args:
+            provider_type (str): The type of ModelProvider to use.
+
+        Returns:
+            Optional[str]: The name of the default model, or None if not available.
+        """
+        provider = self.get_model_provider(provider_type)
+        if provider and provider.is_available():
+            return provider.get_default_model()
+        return None
