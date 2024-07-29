@@ -12,13 +12,13 @@ def cli():
     """
     pass
 
+
 # Add subcommands to the main CLI group
 cli.add_command(code)
 cli.add_command(git)
 cli.add_command(web)
 cli.add_command(fabric)
 cli.add_command(ticket)
-
 
 if __name__ == "__main__":
     cli()
