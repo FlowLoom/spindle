@@ -7,3 +7,4 @@ from .abstract_fetcher_decorator import *
 from .abstract_fetcher import *
 from .abstract_processor import *
 from .abstract_serializer_factory import *
+from .abstract_model_provider import *
