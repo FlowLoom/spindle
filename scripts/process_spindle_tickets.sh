@@ -2,14 +2,14 @@
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 -d <destination_directory> [-s <sprint_id>] [-g <tags>]"
+    echo "Usage: $0 -d <source_directory> [-s <sprint_id>] [-g <tags>]"
     exit 1
 }
 
 # Parse command-line arguments
 while getopts "d:s:g:" opt; do
     case $opt in
-        d) dest_dir=$OPTARG ;;
+        d) src_dir=$OPTARG ;;
         s) sprint_id=$OPTARG ;;
         g) tags=$OPTARG ;;
         *) usage ;;
@@ -32,9 +32,9 @@ if [ -z "$tags" ]; then
 fi
 
 # Run spindle ticket jira command for each fab_tickets JSON file
-for file in "$dest_dir"/fab_tickets_*.json; do
+for file in "$src_dir"/fab_tickets_*.json; do
     echo "Processing file $file with spindle ticket jira"
-    spindle ticket jira --file="$file" --close --sprint="$sprint_id" --tags="$tags"
+    spindle ticket jira create --file="$file" --close --sprint="$sprint_id" --tags="$tags"
 done
 
 echo "All files processed."
