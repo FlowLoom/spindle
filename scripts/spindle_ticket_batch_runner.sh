@@ -37,8 +37,11 @@ end=5
 while [ $start -le $total ]; do
     echo "Running command with start=$start and end=$end"
 
-    # Execute the command with current start and end values
-    spindle git --repo="$repo_path" --format=json --output="$dest_dir/tickets_${start}-${end}.json" --start=$start --end=$end --full-message | fabric -sp git_tickets_json > "$dest_dir/fab_tickets_${start}-${end}.json"
+    # Generate a timestamp
+    timestamp=$(date +"%Y%m%d_%H%M%S")
+
+    # Execute the command with current start and end values, including the timestamp in the output filename
+    spindle git --repo="$repo_path" --format=json --output="$dest_dir/tickets_${timestamp}.json" --start=$start --end=$end --full-message | fabric -sp git_tickets_json > "$dest_dir/fab_tickets_${timestamp}.json"
 
     # Increment start and end values by 5
     start=$((start + 5))
