@@ -1,37 +1,78 @@
-from typing import List, Optional
-from spindle.abstracts import AbstractModelProvider
+import asyncio
+from typing import List, Dict, Any, Generator, Optional
+from ollama import AsyncClient
+from spindle.abstracts.abstract_model_provider import AbstractModelProvider
 
-__All__ = ["OllamaModelProvider"]
+__all__ = ["OllamaModelProvider"]
 
 
 class OllamaModelProvider(AbstractModelProvider):
-    def __init__(self, remote_server: Optional[str] = None):
+    def __init__(self, host: str = "http://localhost:11434"):
         super().__init__("Ollama")
-        self.remote_server = remote_server
+        self.host = host
         self.models = []
-        self.initialize_client()
-
-    def initialize_client(self):
-        try:
-            import ollama
-            if self.remote_server:
-                client = ollama.Client(host=self.remote_server)
-                self.models = [model['name'] for model in client.list()['models']]
-            else:
-                self.models = [model['name'] for model in ollama.list()['models']]
-        except ImportError:
-            self.logger.warning("Ollama library is not installed.")
-        except Exception as e:
-            self.logger.error(f"Error initializing Ollama client: {str(e)}")
+        self._fetch_models()
 
     def _fetch_models(self) -> List[str]:
-        return self.models
+        try:
+            client = AsyncClient(host=self.host)
+            self.models = asyncio.run(self._async_fetch_models(client))
+            return self.models
+        except Exception as e:
+            self.logger.error(f"Error fetching Ollama models: {str(e)}")
+            return []
+
+    async def _async_fetch_models(self, client: AsyncClient) -> List[str]:
+        response = await client.list()
+        return [model['name'] for model in response['models']]
 
     def _check_availability(self) -> bool:
-        return bool(self.models)
+        return len(self.models) > 0
 
     def _get_default_model(self) -> Optional[str]:
         return self.models[0] if self.models else None
 
     def _validate_model(self, model_name: str) -> bool:
         return model_name in self.models
+
+    def _send_message(self, messages: List[Dict[str, str]], model: str, args: Dict[str, Any]) -> str:
+        try:
+            return asyncio.run(self._async_send_message(messages, model, args))
+        except Exception as e:
+            self.logger.error(f"Error sending message to Ollama: {str(e)}")
+            raise
+
+    async def _async_send_message(self, messages: List[Dict[str, str]], model: str, args: Dict[str, Any]) -> str:
+        async with AsyncClient(host=self.host) as client:
+            response = await client.chat(
+                model=model,
+                messages=messages,
+                options={
+                    "temperature": args.get('temp', 0.7),
+                    "top_p": args.get('top_p', 1),
+                    "num_predict": args.get('max_tokens', 100),
+                }
+            )
+            return response['message']['content']
+
+    def _stream_message(self, messages: List[Dict[str, str]], model: str, args: Dict[str, Any]) -> Generator[str, None, None]:
+        try:
+            for chunk in asyncio.run(self._async_stream_message(messages, model, args)):
+                yield chunk
+        except Exception as e:
+            self.logger.error(f"Error streaming message from Ollama: {str(e)}")
+            raise
+
+    async def _async_stream_message(self, messages: List[Dict[str, str]], model: str, args: Dict[str, Any]) -> Generator[str, None, None]:
+        async with AsyncClient(host=self.host) as client:
+            async for part in await client.chat(
+                    model=model,
+                    messages=messages,
+                    options={
+                        "temperature": args.get('temp', 0.7),
+                        "top_p": args.get('top_p', 1),
+                        "num_predict": args.get('max_tokens', 100),
+                    },
+                    stream=True
+            ):
+                yield part['message']['content']
