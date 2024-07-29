@@ -1,6 +1,6 @@
 from typing import Dict, Type, Optional, List
-from spindle.interfaces.model_provider_interface import IModelProvider
-from spindle.providers.gpt_model_provider import GPTModelProvider
+from spindle.interfaces import IModelProvider
+from spindle.providers import GPTModelProvider
 from spindle.providers import ClaudeModelProvider
 from spindle.providers import GoogleModelProvider
 from spindle.providers import OllamaModelProvider
