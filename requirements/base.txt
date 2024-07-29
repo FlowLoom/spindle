@@ -28,3 +28,7 @@ anthropic # https://github.com/anthropics/anthropic-sdk-python
 google-generativeai # https://github.com/google-gemini/generative-ai-python
 ollama # https://github.com/ollama/ollama-python
 pyperclip # https://github.com/asweigart/pyperclip
+
+# Logging
+# ------------------------------------------------------------------------------
+structlog==24.4.0 # https://github.com/hynek/structlog
