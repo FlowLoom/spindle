@@ -1,0 +1,8 @@
+{
+  "commits": [
+    {
+      "message": "Feat(cli): add ticket command to CLI\n\nThis commit adds the ticket command to the CLI, enhancing functionality by allowing ticket-related operations via the command-line interface."
+    }
+  ],
+  "timestamp": "2024-07-28T18:48:28.175689"
+}
