@@ -4,6 +4,9 @@ from spindle.config import ConfigManager
 from spindle.services import OpenAIService, ClaudeService, GoogleService, OllamaService
 from spindle.exceptions import SpindleException
 
+__All__ = ["Standalone"]
+
+
 class Standalone:
     def __init__(self, args: Dict[str, Any], pattern: str = ""):
         self.config = ConfigManager()
