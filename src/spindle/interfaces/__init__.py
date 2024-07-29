@@ -9,3 +9,4 @@ from .visitable_interface import *
 from .serializer_interface import *
 from .serializer_factory_interface import *
 from .model_provider_interface import *
+from .configuration_manager_interface import *
