@@ -20,7 +20,8 @@ def ticket():
 @click.option('--tags', '-g', multiple=True, help='Tags to add to the tickets')
 @click.option('--assignee', '-a', help='ID of the assignee')
 @click.option('--close', '-c', is_flag=True, help='Close all created tickets')
-def jira(file, server, username, token, project, tags, assignee, close):
+@click.option('--sprint', '-S', help='Sprint ID or name to add the tickets to')
+def jira(file, server, username, token, project, tags, assignee, close, sprint):
     """Create Jira tickets from a JSON file."""
     config_manager = ConfigManager()
 
@@ -30,6 +31,7 @@ def jira(file, server, username, token, project, tags, assignee, close):
     token = token or config_manager.get('JIRA_TOKEN', 'token')
     project = project or config_manager.get('JIRA_PROJECT', 'project')
     assignee = assignee or config_manager.get('JIRA_ASSIGNEE', 'assignee')
+    sprint = sprint or config_manager.get('JIRA_SPRINT', 'sprint')
 
     # Ensure required parameters are provided
     if not all([server, username, token, project]):
@@ -64,6 +66,11 @@ def jira(file, server, username, token, project, tags, assignee, close):
 
         issue = jira.create_issue(fields=issue_dict)
         click.echo(f"Created ticket: {issue.key} - {issue.fields.summary}")
+
+        # Add the ticket to the specified sprint
+        if sprint:
+            jira.add_issues_to_sprint(sprint, [issue.key])
+            click.echo(f"Added ticket {issue.key} - {issue.fields.summary} to sprint: {sprint}")
 
         # Close the ticket if the --close option is specified
         if close:
