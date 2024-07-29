@@ -1,5 +1,3 @@
-# Project Dependencies
-# ====================
-
 # Mac Dependencies
-appscript==1.2.5
+# ------------------------------------------------------------------------------
+appscript==1.2.5 # https://pypi.org/project/appscript/

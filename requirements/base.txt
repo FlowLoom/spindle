@@ -1,30 +1,30 @@
-# Project Dependencies
-# ====================
-
 # Core Dependencies
-click==8.1.7
-gitpython==3.1.43
-python-dotenv
+# ------------------------------------------------------------------------------
+click==8.1.7 # https://github.com/pallets/click
+gitpython==3.1.43 # https://github.com/gitpython-developers/GitPython
+python-dotenv # https://github.com/theskumar/python-dotenv
 
 # Ticketing System
-jira==3.8.0
+# ------------------------------------------------------------------------------
+jira==3.8.0 # https://github.com/pycontribs/jira
 
 # Web Scraping
-requests==2.31.0
-beautifulsoup4==4.12.3
-#newspaper3k==0.2.8
-newspaper4k==0.9.3.1
-goose3==3.1.19
-lxml[html_clean]==5.2.2
-trafilatura==0.9.3
-readability-lxml==0.8.1
-article-parser==1.8.0
-boilerpy3==1.0.6
-html2text==2020.1.16
+# ------------------------------------------------------------------------------
+requests==2.31.0 # https://github.com/psf/requests
+beautifulsoup4==4.12.3 # https://git.launchpad.net/beautifulsoup
+newspaper4k==0.9.3.1 # https://github.com/AndyTheFactory/newspaper4k
+goose3==3.1.19 # https://github.com/goose3/goose3
+lxml[html_clean]==5.2.2 # https://github.com/lxml/lxml
+trafilatura==0.9.3 # https://github.com/adbar/trafilatura
+readability-lxml==0.8.1 # https://github.com/buriy/python-readability
+article-parser==1.8.0 # https://github.com/myifeng/article-parser
+boilerpy3==1.0.6 # https://github.com/jmriebold/BoilerPy3
+html2text==2020.1.16 # https://github.com/Alir3z4/html2text
 
 # LLM
-openai
-anthropic
-google-generativeai
-ollama
-pyperclip
+# ------------------------------------------------------------------------------
+openai # https://github.com/openai/openai-python
+anthropic # https://github.com/anthropics/anthropic-sdk-python
+google-generativeai # https://github.com/google-gemini/generative-ai-python
+ollama # https://github.com/ollama/ollama-python
+pyperclip # https://github.com/asweigart/pyperclip
