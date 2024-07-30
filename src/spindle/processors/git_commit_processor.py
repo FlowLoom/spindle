@@ -11,20 +11,20 @@ class GitCommitProcessor(AbstractProcessor):
         self.max_length = max_length
         self.capitalize_first_word = capitalize_first_word
 
-    def _preprocess(self, content: List[Any]) -> List[Any]:
+    def _preprocess(self, content: List[Any], **kwargs: Any) -> List[Any]:
         """
         Preprocess the git commit messages.
         In this case, we're not doing any preprocessing before extraction.
         """
         return self._extract_content(content)
 
-    def _extract_content(self, commits: List[Any]) -> List[str]:
+    def _extract_content(self, commits: List[Any], **kwargs: Any) -> List[str]:
         """
         Extract the commit messages from the commit objects.
         """
         return [commit.message.strip() for commit in commits]
 
-    def _main_process(self, commit_messages: List[str]) -> List[Dict[str, Any]]:
+    def _main_process(self, commit_messages: List[str], **kwargs: Any) -> List[Dict[str, Any]]:
         processed_commits = []
         for message in commit_messages:
             processed_commit = {"message": message}
@@ -39,7 +39,7 @@ class GitCommitProcessor(AbstractProcessor):
             processed_commits.append(processed_commit)
         return processed_commits
 
-    def _postprocess(self, processed_commits: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _postprocess(self, processed_commits: List[Dict[str, Any]], **kwargs: Any) -> List[Dict[str, Any]]:
         """
         Postprocess the git commit messages.
         In this case, we're just returning the processed commits as is.
