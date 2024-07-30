@@ -13,13 +13,14 @@ class IProcessor(ABC):
     """
 
     @abstractmethod
-    def process(self, content: Any) -> Any:
+    def process(self, *args: Any, **kwargs: Any) -> Any:
         """
         Process the given content.
         This method orchestrates the entire processing workflow.
 
         Args:
-            content (Any): The content to be processed.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The fully processed content.
@@ -27,12 +28,13 @@ class IProcessor(ABC):
         pass
 
     @abstractmethod
-    def _preprocess(self, content: Any) -> Any:
+    def _preprocess(self, *args: Any, **kwargs: Any) -> Any:
         """
         Preprocess the content before extraction and main processing.
 
         Args:
-            content (Any): The content to be preprocessed.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The preprocessed content.
@@ -40,12 +42,13 @@ class IProcessor(ABC):
         pass
 
     @abstractmethod
-    def _extract_content(self, content: Any) -> Any:
+    def _extract_content(self, *args: Any, **kwargs: Any) -> Any:
         """
         Extract relevant content from the preprocessed data.
 
         Args:
-            content (Any): The content to extract from.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The extracted content.
@@ -53,12 +56,13 @@ class IProcessor(ABC):
         pass
 
     @abstractmethod
-    def _main_process(self, content: Any) -> Any:
+    def _main_process(self, *args: Any, **kwargs: Any) -> Any:
         """
         Main processing step.
 
         Args:
-            content (Any): The content to be processed.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The processed content.
@@ -66,14 +70,16 @@ class IProcessor(ABC):
         pass
 
     @abstractmethod
-    def _postprocess(self, content: Any) -> Any:
+    def _postprocess(self, *args: Any, **kwargs: Any) -> Any:
         """
         Postprocess the content after main processing.
 
         Args:
-            content (Any): The content to be postprocessed.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The postprocessed content.
         """
         pass
+
