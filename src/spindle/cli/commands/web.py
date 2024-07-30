@@ -6,7 +6,8 @@ from spindle.handlers import CompositeHandler
 from spindle.exceptions import HandlerException
 
 @click.command()
-@click.option('--url', required=True, help='URL to scrape text from')
+@click.argument('url', required=False)
+#@click.option('--url', required=True, help='URL to scrape text from')
 @click.option('--output', help='Output file path')
 @click.option('--method', default='traf',
               type=click.Choice(['custom', 'raw', 'traf', 'readability', 'article_parser', 'boilerpy3', 'html2text', 'newspaper', 'goose']),
