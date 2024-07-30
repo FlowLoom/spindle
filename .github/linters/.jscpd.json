@@ -1,0 +1,23 @@
+{
+  "threshold": 0,
+  "reporters": ["html", "markdown"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/.rbenv/**",
+    "**/.venv/**",
+    "**/*cache*/**",
+    "**/.github/**",
+    "**/.idea/**",
+    "**/report/**",
+    "**/*.svg",
+    "**/docs/**",
+    "**/.tox/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/spindle.egg-info/**",
+    "**/output/**",
+    "**/.bandit.yml",
+    "**/megalinter-reports/**"
+  ]
+}
