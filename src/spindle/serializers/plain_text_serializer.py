@@ -4,11 +4,13 @@ from spindle.interfaces import ISerializer
 
 _All_ = ["PlainTextSerializer"]
 
+
 # TODO: Create a abstract class for all serializers
 class PlainTextSerializer(ISerializer):
     def encode(self, data: Dict[str, Any]) -> str:
         try:
-            return "\n".join([f"{k}: {v}" for k, v in data.items()])
+            return '\n'.join('\n'.join([k] + (v if isinstance(v, list) else [v])) for k, v in data.items())
+
         except Exception as e:
             raise SerializationException(f"PlainText serialization error: {str(e)}")
 
