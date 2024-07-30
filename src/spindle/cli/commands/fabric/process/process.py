@@ -1,3 +1,4 @@
+import sys
 import click
 from spindle.core import ModelInteractionManager
 from spindle.exceptions import SpindleException
@@ -6,7 +7,8 @@ __all__ = ["process"]
 
 
 @click.command()
-@click.option('--text', '-t', help="Text to process with Fabric")
+@click.argument('text', required=False)
+#@click.option('--text', '-t', help="Text to process with Fabric")
 @click.option('--pattern', '-p', help="Fabric pattern to use")
 @click.option('--copy', '-C', is_flag=True, help="Copy the response to clipboard")
 @click.option('--output', '-o', help="Save the response to a file")
@@ -18,7 +20,10 @@ def process(text, pattern, copy, output, stream, model):
         interaction_manager = ModelInteractionManager(click.get_current_context().params, pattern)
 
         if not text:
-            text = interaction_manager.get_cli_input()
+            # TODO: Implement a way to read from stdin in a non-blocking way in interaction_manager
+            #  TODO: see if we can do stdin and cli input at the same time
+            #text = interaction_manager.get_cli_input()
+            text = sys.stdin.read()
 
         if stream:
             # Handle streaming response
