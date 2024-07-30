@@ -18,7 +18,7 @@ __All__ = ["create"]
 @click.option('--sprint', '-S', help='Sprint ID or name to add the tickets to')
 def create(file, server, username, token, project, tags, assignee, close, sprint):
     """Create Jira tickets from a JSON file."""
-    config_manager = ConfigManager()
+    config_manager = ConfigManager().get_config()
 
     # Load options from the default configuration file if not provided through command-line
     server = server or config_manager.get('JIRA_SERVER', 'server')
