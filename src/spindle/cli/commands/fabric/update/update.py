@@ -1,5 +1,5 @@
 import click
-from spindle.utils.update import Update
+from spindle.updater import Update
 from spindle.utils.alias import Alias
 from spindle.exceptions import SpindleException
 

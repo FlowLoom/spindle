@@ -26,7 +26,7 @@ class Setup:
                 self.config.set(env_var, key)
 
     def _update_patterns(self):
-        from spindle.utils.update import Update
+        from spindle.updater import Update
         Update().update_patterns()
 
     def _update_shell_configs(self):
