@@ -15,5 +15,6 @@ def fabric():
 # Add subcommands to the main CLI group
 fabric.add_command(process)
 fabric.add_command(setup)
+fabric.add_command(setup, name='init')  # Alias for setup
 fabric.add_command(update)
 fabric.add_command(gui)
