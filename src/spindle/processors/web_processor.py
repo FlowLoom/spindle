@@ -53,7 +53,7 @@ class WebProcessor(AbstractProcessor):
         self.extract_metadata = extract_metadata
         self.available_methods = self._check_dependencies()
 
-    def process(self, content: Any) -> Dict[str, Any]:
+    def process(self, content: Any, **kwargs: Any) -> Dict[str, Any]:
         """
         Process the input content using the configured settings.
 
@@ -68,7 +68,7 @@ class WebProcessor(AbstractProcessor):
 
         return super().process(content)
 
-    def _preprocess(self, content: Any) -> str:
+    def _preprocess(self, content: Any, **kwargs: Any) -> str:
         """
         Preprocess the raw HTML content by extracting the main content.
 
@@ -114,7 +114,7 @@ class WebProcessor(AbstractProcessor):
 
         return processed_lines
 
-    def _postprocess(self, content: List[str]) -> Dict[str, Any]:
+    def _postprocess(self, content: List[str], **kwargs: Any) -> Dict[str, Any]:
         """
         Postprocess the content and prepare the final output.
 
@@ -135,7 +135,7 @@ class WebProcessor(AbstractProcessor):
 
         return result
 
-    def _extract_content(self, raw_content: Any) -> str:
+    def _extract_content(self, raw_content: Any, **kwargs: Any) -> str:
         """
         Extract text from the raw HTML content using the specified method.
 
