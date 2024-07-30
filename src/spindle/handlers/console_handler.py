@@ -50,7 +50,7 @@ class ConsoleHandler(AbstractHandler):
 
             # Write to console
             output_stream = sys.stderr if self.use_stderr else sys.stdout
-            print(formatted_data, file=output_stream)
+            print(formatted_data, file=output_stream, flush=True, end='')
 
             self.logger.debug("Data successfully written to console")
 
