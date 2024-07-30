@@ -27,10 +27,10 @@ class AbstractProcessor(IProcessor):
             Any: The fully processed content.
         """
         content = args[0] if args else kwargs.get('content')
-        preprocessed = self._preprocess(content)
-        #extracted = self._extract_content(preprocessed)
-        processed = self._main_process(preprocessed)
-        return self._postprocess(processed)
+        preprocessed = self._preprocess(content,  **kwargs)
+        extracted = self._extract_content(preprocessed,  **kwargs)
+        processed = self._main_process(extracted,  **kwargs)
+        return self._postprocess(processed,  **kwargs)
 
     @abstractmethod
     def _preprocess(self, *args: Any, **kwargs: Any) -> Any:
