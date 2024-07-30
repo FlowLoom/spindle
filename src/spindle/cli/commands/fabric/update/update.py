@@ -11,6 +11,6 @@ def update():
     """Update Fabric patterns."""
     try:
         Update().update_patterns()
-        Alias().execute()
+        #Alias().execute()
     except SpindleException as e:
         click.echo(f"Error during update: {str(e)}", err=True)
