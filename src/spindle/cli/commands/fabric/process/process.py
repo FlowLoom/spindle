@@ -1,5 +1,5 @@
 import click
-from spindle.utils.standalone import Standalone
+from spindle.core import ModelInteractionManager
 from spindle.exceptions import SpindleException
 
 __all__ = ["process"]
@@ -15,25 +15,25 @@ __all__ = ["process"]
 def process(text, pattern, copy, output, stream, model):
     """Process text using Fabric."""
     try:
-        standalone = Standalone(click.get_current_context().params, pattern)
+        interaction_manager = ModelInteractionManager(click.get_current_context().params, pattern)
 
         if not text:
-            text = standalone.get_cli_input()
+            text = interaction_manager.get_cli_input()
 
         if stream:
             # Handle streaming response
-            for chunk in standalone.stream_message(text):
+            for chunk in interaction_manager.stream_message(text):
                 click.echo(chunk, nl=False)
             click.echo()  # Print a newline at the end of the stream
         else:
             # Handle non-streaming response
-            response = standalone.send_message(text)
+            response = interaction_manager.send_message(text)
             click.echo(response)
 
         # Handle copy and output options
         if copy or output:
             # For streaming, we need to reassemble the full response
-            full_response = ''.join(standalone.stream_message(text)) if stream else response
+            full_response = ''.join(interaction_manager.stream_message(text)) if stream else response
 
             if copy:
                 import pyperclip
