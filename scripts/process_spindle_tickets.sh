@@ -17,7 +17,7 @@ while getopts "d:s:g:" opt; do
 done
 
 # Check if required arguments are provided
-if [ -d "$dest_dir" ]; then
+if [ -z "$src_dir" ]; then
     usage
 fi
 
