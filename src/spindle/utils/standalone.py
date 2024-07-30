@@ -104,4 +104,4 @@ class Standalone:
 
     @staticmethod
     def get_cli_input() -> str:
-        return input("Enter your message: ")
+        return input()
