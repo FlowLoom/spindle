@@ -35,6 +35,7 @@ pyperclip # https://github.com/asweigart/pyperclip
 
 # Logging
 # ------------------------------------------------------------------------------
+# TODO: Implement structlog
 structlog==24.4.0 # https://github.com/hynek/structlog
 
 
