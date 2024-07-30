@@ -131,6 +131,7 @@ class CompositeHandler(AbstractHandler):
                 handler.serializer = serializer
         self.logger.info(f"Set serializer {serializer.__class__.__name__} for all compatible handlers.")
 
+
 # Usage example
 if __name__ == "__main__":
     from spindle.handlers import FileHandler, ConsoleHandler
