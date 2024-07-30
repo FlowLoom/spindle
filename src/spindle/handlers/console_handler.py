@@ -87,6 +87,7 @@ class ConsoleHandler(AbstractHandler):
         indentation = ' ' * self.indent
         return '\n'.join(f"{self.prefix}{indentation}{line}" for line in lines)
 
+
     def set_color(self, color: Color) -> None:
         """
         Set the output color.
