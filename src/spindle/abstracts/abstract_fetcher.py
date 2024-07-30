@@ -26,59 +26,56 @@ class AbstractFetcher(IFetcher):
 
         self.processor = processor
 
-    def fetch(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
+    def fetch(self, source: Any, **kwargs: Any) -> Dict[str, Any]:
         """
-        Parse the content from the given source.
+        Fetch and process the content from the given source.
 
         Args:
-            source (Any): The source to be parsed (e.g., file path, URL, repo path)
+            source: The source to fetch content from.
+            **kwargs: Additional keyword arguments.
 
         Returns:
-            Dict[str, Any]: A dictionary containing the parsed content
+            Dict[str, Any]: A dictionary containing the fetched and processed content
         """
-
-        source = args[0] if args else kwargs.get('source')
-
-        raw_content = self._fetch_content(source)
-        processed_content = self._process_content(raw_content)
-        return self._format_output(processed_content)
-
+        raw_content = self._fetch_content(source, **kwargs)
+        processed_content = self._process_content(raw_content, **kwargs)
+        return self._format_output(processed_content, **kwargs)
 
     @abstractmethod
-    def _fetch_content(self, *args: Any, **kwargs: Any) -> Any:
+    def _fetch_content(self, source: Any, **kwargs: Any) -> Any:
         """
         Fetch raw content from the source.
 
-        This method should be implemented by subclasses to handle specific source types.
-
         Args:
-            source (Any): The source from which to fetch content
+            source: The source to fetch content from.
+            **kwargs: Additional keyword arguments.
 
         Returns:
             Any: The raw content fetched from the source
         """
         pass
 
-    def _process_content(self, *args: Any, **kwargs: Any) -> Any:
+    def _process_content(self, content: Any, **kwargs: Any) -> Any:
         """
         Process the content using the associated processor.
 
         Args:
-            content (Any): The content to be processed
+            content: The content to be processed
+            **kwargs: Additional keyword arguments to pass to the processor
 
         Returns:
             Any: The processed content
         """
-        content = args[0] if args else kwargs.get('content')
-        return self.processor.process(content)
+        return self.processor.process(content, **kwargs)
 
     @abstractmethod
-    def _format_output(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
+    def _format_output(self, processed_content: Any, **kwargs: Any) -> Dict[str, Any]:
         """
         Format the processed content into the expected output structure.
 
         Args:
-            processed_content (Any): The processed content to format
+            processed_content: The processed content to format
+            **kwargs: Additional keyword arguments for formatting
 
         Returns:
             Dict[str, Any]: The formatted output
