@@ -5,9 +5,12 @@ import requests
 from spindle.config import ConfigManager
 from spindle.exceptions import SpindleException
 
+__all__ = ["Update"]
+
+
 class Update:
     def __init__(self):
-        self.config = ConfigManager()
+        self.config = ConfigManager().get_config()
         self.repo_zip_url = "https://github.com/flowloom/spindle/archive/refs/heads/main.zip"
 
     def update_patterns(self):
