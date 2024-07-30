@@ -69,7 +69,7 @@ def code(src: str, output: str, excluded_dirs: str, excluded_files: str, extensi
         parsed_data = fetcher.fetch(src)
         composite_handler.handle(parsed_data)
 
-        click.echo("Code parsing completed successfully.")
+        #click.echo("Code parsing completed successfully.")
 
     except Exception as e:
         click.echo(f"Error: {str(e)}", err=True)
