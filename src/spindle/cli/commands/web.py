@@ -8,7 +8,7 @@ from spindle.exceptions import HandlerException
 @click.command()
 @click.option('--url', required=True, help='URL to scrape text from')
 @click.option('--output', help='Output file path')
-@click.option('--method', default='custom',
+@click.option('--method', default='traf',
               type=click.Choice(['custom', 'raw', 'traf', 'readability', 'article_parser', 'boilerpy3', 'html2text', 'newspaper', 'goose']),
               help='Content extraction method')
 @click.option('--remove-html/--keep-html', default=True, help='Remove HTML tags from the content')
