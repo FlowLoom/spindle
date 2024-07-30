@@ -31,7 +31,7 @@ def youtube(url, duration, transcript, comments, metadata, lang, output, format)
             'lang': lang
         }
 
-        data = fetcher.fetch(url, options)
+        data = fetcher.fetch(url, options=options)
         handler.handle(data)
 
     except Exception as e:
