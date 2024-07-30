@@ -1,6 +1,7 @@
 from spindle.abstracts import AbstractFetcher
 from spindle.interfaces import IProcessor
 import re
+from urllib.parse import urlparse, parse_qs, unquote
 
 __all__ = ['YouTubeFetcher']
 
@@ -22,7 +23,16 @@ class YouTubeFetcher(AbstractFetcher):
         return processed_content
 
     @staticmethod
-    def _get_video_id(url) -> str:
-        pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})"
-        match = re.search(pattern, url)
-        return match.group(1) if match else None
+    def _get_video_id(url) -> str or None:
+        url = unquote(url).replace("\\", "")
+        parsed_url = urlparse(url)
+        if parsed_url.hostname == 'youtu.be':
+            return parsed_url.path[1:12]
+        if parsed_url.hostname in {'www.youtube.com', 'youtube.com'}:
+            if parsed_url.path == '/watch':
+                return parse_qs(parsed_url.query).get('v', [None])[0]
+            if parsed_url.path.startswith('/embed/'):
+                return parsed_url.path.split('/')[2]
+            if parsed_url.path.startswith('/v/'):
+                return parsed_url.path.split('/')[2]
+        return None
