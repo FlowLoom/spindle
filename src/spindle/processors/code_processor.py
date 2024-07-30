@@ -18,20 +18,20 @@ class CodeProcessor(AbstractProcessor):
         self.min_line_length = min_line_length
         self.max_line_length = max_line_length
 
-    def _preprocess(self, content: Dict[str, str]) -> Dict[str, str]:
+    def _preprocess(self, content: Dict[str, str], **kwargs: Any) -> Dict[str, str]:
         """
         Preprocess the code content.
         In this case, we're not doing any preprocessing before extraction.
         """
         return self._extract_content(content)
 
-    def _extract_content(self, content: Dict[str, str]) -> Dict[str, List[str]]:
+    def _extract_content(self, content: Dict[str, str], **kwargs: Any) -> Dict[str, List[str]]:
         """
         Extract content by splitting each file's content into lines.
         """
         return {file_path: content.split('\n') for file_path, content in content.items()}
 
-    def _main_process(self, content: Dict[str, List[str]]) -> Dict[str, List[str]]:
+    def _main_process(self, content: Dict[str, List[str]], **kwargs: Any) -> Dict[str, List[str]]:
         """
         Main processing step for the code content.
         """
@@ -54,7 +54,7 @@ class CodeProcessor(AbstractProcessor):
 
         return processed_content
 
-    def _postprocess(self, content: Dict[str, List[str]]) -> Dict[str, List[str]]:
+    def _postprocess(self, content: Dict[str, List[str]], **kwargs: Any) -> Dict[str, List[str]]:
         """
         Postprocess the code content.
         In this case, we're just returning the processed content as is.
