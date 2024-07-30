@@ -13,8 +13,19 @@ class SaveHandler(AbstractHandler):
         self.config = config
         self.silent = silent
         self.passthrough = passthrough
+        self.target_file = None
 
     def handle(self, data: Dict[str, Any]) -> None:
+        preprocessed_data = self.preprocess(data)
+        self.write(preprocessed_data)
+
+        if not self.silent:
+            click.echo(f"Content saved to {self.target_file}", err=True)
+
+        if not self.silent or self.passthrough:
+            click.echo(preprocessed_data['content'], nl=False)
+
+    def preprocess(self, data: Dict[str, Any]) -> Dict[str, Any]:
         PATH_KEY = "FABRIC_OUTPUT_PATH"
         out = self.config.get(PATH_KEY)
         if out is None:
@@ -29,8 +40,6 @@ class SaveHandler(AbstractHandler):
 
         stub = data['stub']
         date_format = data['date_format']
-        content = data['content']
-        frontmatter = data['frontmatter']
 
         if date_format:
             yyyymmdd = datetime.now().strftime(date_format)
@@ -47,18 +56,13 @@ class SaveHandler(AbstractHandler):
             else:
                 target = f"{out}{stub}-{inc}.md"
 
-        with open(target, "w") as fp:
-            fp.write(frontmatter)
-            fp.write(content)
-
-        if not self.silent:
-            click.echo(f"Content saved to {target}", err=True)
-
-        if not self.silent or self.passthrough:
-            click.echo(content, nl=False)
-
-    def preprocess(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        self.target_file = target
         return data
 
-    def write(self, data: str) -> None:
-        pass
+    def write(self, data: Dict[str, Any]) -> None:
+        content = data['content']
+        frontmatter = data['frontmatter']
+
+        with open(self.target_file, "w") as fp:
+            fp.write(frontmatter)
+            fp.write(content)
