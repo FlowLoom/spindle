@@ -85,7 +85,6 @@ class AbstractFetcher(IFetcher):
         """
         pass
 
-
     def accept(self, visitor: IVisitor) -> None:
         """
         Accept a visitor to perform operations on this parser.
