@@ -45,7 +45,7 @@ class AbstractFetcher(IFetcher):
 
 
     @abstractmethod
-    def _fetch_content(self, source: Any) -> Any:
+    def _fetch_content(self, *args: Any, **kwargs: Any) -> Any:
         """
         Fetch raw content from the source.
 
@@ -59,7 +59,7 @@ class AbstractFetcher(IFetcher):
         """
         pass
 
-    def _process_content(self, content: Any) -> Any:
+    def _process_content(self, *args: Any, **kwargs: Any) -> Any:
         """
         Process the content using the associated processor.
 
@@ -69,10 +69,11 @@ class AbstractFetcher(IFetcher):
         Returns:
             Any: The processed content
         """
+        content = args[0] if args else kwargs.get('content')
         return self.processor.process(content)
 
     @abstractmethod
-    def _format_output(self, processed_content: Any) -> Dict[str, Any]:
+    def _format_output(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """
         Format the processed content into the expected output structure.
 
