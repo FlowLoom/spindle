@@ -29,12 +29,13 @@ class IFetcher(IVisitable):
         pass
 
     @abstractmethod
-    def _fetch_content(self, source: Any) -> Any:
+    def _fetch_content(self, *args: Any, **kwargs: Any) -> Any:
         """
         Fetch raw content from the source.
 
         Args:
-            source (Any): The source from which to fetch content
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The raw content fetched from the source
@@ -42,12 +43,13 @@ class IFetcher(IVisitable):
         pass
 
     @abstractmethod
-    def _process_content(self, content: Any) -> Any:
+    def _process_content(self, *args: Any, **kwargs: Any) -> Any:
         """
         Process the content using the associated processor.
 
         Args:
-            content (Any): The content to be processed
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Any: The processed content
@@ -55,12 +57,13 @@ class IFetcher(IVisitable):
         pass
 
     @abstractmethod
-    def _format_output(self, processed_content: Any) -> Any:
+    def _format_output(self, *args: Any, **kwargs: Any) -> Any:
         """
         Format the processed content into the expected output structure.
 
         Args:
-            processed_content (Any): The processed content to format
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
 
         Returns:
             Dict[str, Any]: The formatted output
