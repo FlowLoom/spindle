@@ -2,7 +2,7 @@ import click
 from spindle.utils.standalone import Standalone
 from spindle.exceptions import SpindleException
 
-__All__ = ['process']
+__all__ = ["process"]
 
 
 @click.command()
@@ -16,12 +16,40 @@ def process(text, pattern, copy, output, stream, model):
     """Process text using Fabric."""
     try:
         standalone = Standalone(click.get_current_context().params, pattern)
+
         if not text:
             text = standalone.get_cli_input()
 
         if stream:
-            standalone.stream_message(text)
+            # Handle streaming response
+            for chunk in standalone.stream_message(text):
+                click.echo(chunk, nl=False)
+            click.echo()  # Print a newline at the end of the stream
         else:
-            standalone.send_message(text)
+            # Handle non-streaming response
+            response = standalone.send_message(text)
+            click.echo(response)
+
+        # Handle copy and output options
+        if copy or output:
+            # For streaming, we need to reassemble the full response
+            full_response = ''.join(standalone.stream_message(text)) if stream else response
+
+            if copy:
+                import pyperclip
+                pyperclip.copy(full_response)
+                click.echo("Response copied to clipboard.")
+
+            if output:
+                with open(output, "w") as f:
+                    f.write(full_response)
+                click.echo(f"Response saved to {output}")
+
     except SpindleException as e:
         click.echo(f"Error: {str(e)}", err=True)
+    except Exception as e:
+        click.echo(f"An unexpected error occurred: {str(e)}", err=True)
+
+
+if __name__ == '__main__':
+    process()
