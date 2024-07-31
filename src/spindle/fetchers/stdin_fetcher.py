@@ -2,10 +2,10 @@ from spindle.abstracts import AbstractFetcher
 from typing import Any, Dict
 import sys
 
-__all__ = ['SaveFetcher']
+__all__ = ['STDINFetcher']
 
 
-class SaveFetcher(AbstractFetcher):
+class STDINFetcher(AbstractFetcher):
     def _fetch_content(self, source: Any, **kwargs: Any) -> str:
         return sys.stdin.read()
 
