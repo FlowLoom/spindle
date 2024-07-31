@@ -1,9 +1,10 @@
-# In spindle/processors/web_processor.py
-
 from spindle.abstracts import AbstractProcessor
 from typing import List, Dict, Any
 import re
 from bs4 import BeautifulSoup
+
+__all__ = ['WebProcessor']
+
 
 class WebProcessor(AbstractProcessor):
     """
