@@ -79,7 +79,7 @@ class WebProcessor(AbstractProcessor):
             str: The extracted main content.
         """
 
-        return self._extract_content(content)
+        return content
 
     def _main_process(self, content: str) -> List[str]:
         """
