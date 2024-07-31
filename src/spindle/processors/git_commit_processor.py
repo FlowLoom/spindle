@@ -16,7 +16,7 @@ class GitCommitProcessor(AbstractProcessor):
         Preprocess the git commit messages.
         In this case, we're not doing any preprocessing before extraction.
         """
-        return self._extract_content(content)
+        return content
 
     def _extract_content(self, commits: List[Any], **kwargs: Any) -> List[str]:
         """
