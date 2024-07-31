@@ -23,6 +23,8 @@ readability-lxml==0.8.1 # https://github.com/buriy/python-readability
 article-parser==1.8.0 # https://github.com/myifeng/article-parser
 boilerpy3==1.0.6 # https://github.com/jmriebold/BoilerPy3
 html2text==2020.1.16 # https://github.com/Alir3z4/html2text
+# TODO Pin the version
+cloudscraper # https://github.com/VeNoMouS/cloudscraper
 
 # LLM
 # ------------------------------------------------------------------------------
