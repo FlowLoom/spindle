@@ -1,4 +1,4 @@
-import requests
+import cloudscraper
 from typing import Any, Dict, List
 from spindle.abstracts import AbstractFetcher
 from spindle.interfaces import IProcessor
@@ -22,8 +22,9 @@ class WebFetcher(AbstractFetcher):
         """
 
         super().__init__(processor)
+        self.scraper = cloudscraper.create_scraper()
 
-    def fetch(self, source: str) -> Dict[str, List[str]]:
+    def fetch(self, source: str, **kwargs: Any) -> Dict[str, List[str]]:
         """
         Fetch web content from a given source URL.
 
@@ -38,7 +39,7 @@ class WebFetcher(AbstractFetcher):
         processed_content = self._process_content(raw_content)
         return self._format_output(processed_content)
 
-    def _fetch_content(self, url: str) -> str:
+    def _fetch_content(self, url: str, **kwargs: Any) -> str:
         """
         Fetch raw content from a given URL.
 
@@ -52,11 +53,11 @@ class WebFetcher(AbstractFetcher):
             requests.HTTPError: If the HTTP request fails.
         """
 
-        response = requests.get(url)
+        response = self.scraper.get(url)
         response.raise_for_status()
         return response.text
 
-    def _process_content(self, content: str) -> Any:
+    def _process_content(self, content: str, **kwargs: Any) -> Any:
         """
         Process the raw content using the associated processor.
 
@@ -69,7 +70,7 @@ class WebFetcher(AbstractFetcher):
 
         return self.processor.process(content)
 
-    def _format_output(self, processed_content: Any) -> Dict[str, List[str]]:
+    def _format_output(self, processed_content: Any, **kwargs: Any) -> Dict[str, List[str]]:
         """
         Format the processed content into a standardized output structure.
 
