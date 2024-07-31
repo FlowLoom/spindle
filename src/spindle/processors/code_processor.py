@@ -23,7 +23,7 @@ class CodeProcessor(AbstractProcessor):
         Preprocess the code content.
         In this case, we're not doing any preprocessing before extraction.
         """
-        return self._extract_content(content)
+        return content
 
     def _extract_content(self, content: Dict[str, str], **kwargs: Any) -> Dict[str, List[str]]:
         """
