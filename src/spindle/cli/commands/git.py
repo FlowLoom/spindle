@@ -14,7 +14,7 @@ from spindle.config import ConfigManager
 @click.option('--max-length', type=int, help='Maximum length of commit messages (use 0 for no limit)')
 @click.option('--no-capitalize', is_flag=True, help='Do not capitalize the first word of commit messages')
 @click.option('--stats', '-s', is_flag=True, help='Print statistics about the Git fetcher')
-@click.option('--format', type=click.Choice(['json', 'plaintext']), default='plaintext', help='Output format')
+@click.option('--format', type=click.Choice(['json', 'plaintext']), default='json', help='Output format')
 @click.option('--color', type=click.Choice(['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white']), help='Console output color')
 @click.option('--full-message', is_flag=True, help='Output full commit messages without truncation')
 @click.option('--config', help='Path to the configuration file')
