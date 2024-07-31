@@ -1,6 +1,7 @@
 from spindle.interfaces import IHandler, ISerializer
 from abc import abstractmethod
 from typing import Dict, List, Any, Union
+from spindle.exceptions import SerializationException
 
 __All__ = ["AbstractHandler"]
 
