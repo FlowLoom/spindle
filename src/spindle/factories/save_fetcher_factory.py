@@ -1,5 +1,5 @@
 from spindle.abstracts import AbstractFetcherFactory
-from spindle.fetchers import SaveFetcher
+from spindle.fetchers import STDINFetcher
 from spindle.processors import SaveProcessor
 from spindle.handlers import SaveHandler
 from spindle.config import ConfigManager
@@ -13,7 +13,7 @@ class SaveFetcherFactory(AbstractFetcherFactory):
 
     def _create_fetcher(self, **kwargs):
         processor = self._create_processor(**kwargs)
-        return SaveFetcher(processor)
+        return STDINFetcher(processor)
 
     def _create_processor(self, **kwargs):
         return SaveProcessor(self.config)
