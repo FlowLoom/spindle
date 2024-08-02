@@ -4,3 +4,4 @@ from .web_fetcher import *
 from .youtube_fetcher import *
 from .stdin_fetcher import *
 from .pptx_fetcher import *
+from .pptx_setter_fetcher import *
