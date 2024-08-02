@@ -1,6 +1,6 @@
 import logging
 from spindle.abstracts import AbstractProcessor
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 from pptx import Presentation
 
 __all__ = ['PPTXProcessor']
@@ -13,43 +13,59 @@ class PPTXProcessor(AbstractProcessor):
         return content
 
     def _extract_content(self, presentation: Presentation, **kwargs) -> Dict[str, Any]:
-        slide_index = kwargs.get('slide_index')
-        if slide_index is not None:
-            return self._extract_single_slide(presentation, slide_index)
+        only_metadata = kwargs.get('only_metadata', False)
+        if only_metadata:
+            return {'metadata': self._extract_metadata(presentation)}
+
+        slide_range = kwargs.get('slide_range')
+        metadata = kwargs.get('no_metadata')
+        if slide_range is not None:
+            return self._extract_slide_range(presentation, slide_range, metadata)
         else:
-            return self._extract_all_slides(presentation)
+            return self._extract_all_slides(presentation, **kwargs)
 
     def _main_process(self, data: Dict[str, Any], **kwargs) -> Dict[str, Any]:
         return data
 
     def _postprocess(self, data: Dict[str, Any], **kwargs) -> Dict[str, Any]:
-        if 'slide' in data:  # Single slide case
-            if kwargs.get('only_content'):
-                data['slide'] = {'slide_number': data['slide']['slide_number'], 'content': data['slide']['content']}
-            elif kwargs.get('only_notes'):
-                data['slide'] = {'slide_number': data['slide']['slide_number'], 'notes': data['slide']['notes']}
-        else:  # All slides case
+        if kwargs.get('only_metadata'):
+            return data
+
+        if 'slides' in data:
             if kwargs.get('only_content'):
                 data['slides'] = [{'slide_number': slide['slide_number'], 'content': slide['content']} for slide in data['slides']]
             elif kwargs.get('only_notes'):
                 data['slides'] = [{'slide_number': slide['slide_number'], 'notes': slide['notes']} for slide in data['slides']]
+
+        if kwargs.get('no_metadata'):
+            data.pop('metadata', None)
+
         return data
 
-    def _extract_single_slide(self, presentation: Presentation, index: int) -> Dict[str, Any]:
-        if 0 <= index < len(presentation.slides):
-            slide = presentation.slides[index]
-            return {
-                'slide': {
-                    'slide_number': index + 1,
-                    'content': self._extract_slide_content(slide),
-                    'notes': self._extract_speaker_notes(slide)
-                },
-                'metadata': self._extract_metadata(presentation)
-            }
-        else:
-            raise ValueError(f"Slide index {index} is out of range. Presentation has {len(presentation.slides)} slides.")
+    def _extract_slide_range(self, presentation: Presentation, slide_range: Union[int, tuple], metadata: Optional[Union[bool, None]]) -> Dict[str, Any]:
 
-    def _extract_all_slides(self, presentation: Presentation) -> Dict[str, Any]:
+        if isinstance(slide_range, int):
+            slide_range = (slide_range, slide_range + 1)
+
+        start, end = slide_range
+        if start < 0 or end > len(presentation.slides) or start >= end:
+            raise ValueError(f"Invalid slide range. Presentation has {len(presentation.slides)} slides.")
+
+        slides = []
+        for i in range(start, end):
+            slide = presentation.slides[i]
+            slides.append({
+                'slide_number': i + 1,
+                'content': self._extract_slide_content(slide),
+                'notes': self._extract_speaker_notes(slide)
+            })
+
+        data = {'slides': slides}
+        if not metadata: #kwargs.get('no_metadata'):
+            data['metadata'] = self._extract_metadata(presentation)
+        return data
+
+    def _extract_all_slides(self, presentation: Presentation, **kwargs) -> Dict[str, Any]:
         slides = []
         for i, slide in enumerate(presentation.slides):
             try:
@@ -61,10 +77,10 @@ class PPTXProcessor(AbstractProcessor):
             except Exception as e:
                 logger.error(f"Error processing slide {i + 1}: {str(e)}")
 
-        return {
-            'slides': slides,
-            'metadata': self._extract_metadata(presentation)
-        }
+        data = {'slides': slides}
+        if not kwargs.get('no_metadata'):
+            data['metadata'] = self._extract_metadata(presentation)
+        return data
 
     def _extract_slide_content(self, slide) -> str:
         return ' '.join(shape.text for shape in slide.shapes if hasattr(shape, 'text'))
