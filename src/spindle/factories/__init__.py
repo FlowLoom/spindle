@@ -6,3 +6,4 @@ from .model_provider_factory import *
 from .youtube_fetcher_factory import *
 from .save_fetcher_factory import *
 from .pptx_fetcher_factory import *
+from .pptx_setter_fetcher_factory import *
