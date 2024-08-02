@@ -45,3 +45,8 @@ structlog==24.4.0 # https://github.com/hynek/structlog
 # ------------------------------------------------------------------------------
 # TODO Pin the version
 youtube-transcript-api # https://github.com/jdepoix/youtube-transcript-api
+
+# File Parsing
+# ------------------------------------------------------------------------------
+# TODO Pin the version
+python-pptx # https://github.com/scanny/python-pptx
