@@ -13,4 +13,4 @@ def pptx():
 
 # Add subcommands to the main CLI group
 pptx.add_command(pptx_get, name='get')
-#pptx.add_command(set)
+pptx.add_command(pptx_set, name='set')
