@@ -4,3 +4,4 @@ from .git_commit_processor import *
 from .youtube_processor import *
 from .save_processor import *
 from .pptx_processor import *
+from .pptx_setter_processor import *
