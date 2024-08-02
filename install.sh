@@ -1,13 +1,13 @@
 #!/bin/bash
 
-log_file="$HOME/.config/fabric/install.log"
+log_file="$HOME/.config/spindle/install.log"
 
 logging() {
     echo "$(date) : $1"
 }
 
 src_dir="./patterns/*"
-dest_dir="$HOME/.config/fabric/patterns"
+dest_dir="$HOME/.config/spindle/patterns"
 
 # Create the destination directory if not exists
 logging 'Creating destination directory if not exists.'
