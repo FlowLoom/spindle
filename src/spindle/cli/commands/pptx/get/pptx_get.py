@@ -2,7 +2,7 @@ import click
 from spindle.factories import PPTXFetcherFactory
 from spindle.cli.commands.pptx.callbacks import parse_slide_range
 
-__all__ = ['get']
+__all__ = ['pptx_get']
 
 
 @click.command()
@@ -13,7 +13,7 @@ __all__ = ['get']
 @click.option('--only-metadata', is_flag=True, help='Extract only metadata')
 @click.option('--no-metadata', is_flag=True, help='Exclude metadata from output')
 @click.option('--output', '-o', type=click.Path(), help='Output file path')
-def get(file, only_content, only_notes, slide, only_metadata, no_metadata, output):
+def pptx_get(file, only_content, only_notes, slide, only_metadata, no_metadata, output):
     """Parse PPTX files and extract content, speaker notes, and/or metadata."""
     try:
         factory = PPTXFetcherFactory()

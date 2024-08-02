@@ -1,5 +1,6 @@
 import click
-from spindle.cli.commands.pptx.get import get
+from spindle.cli.commands.pptx.get import pptx_get
+from spindle.cli.commands.pptx.set.pptx_set import pptx_set
 
 __all__ = ['pptx']
 
@@ -11,4 +12,5 @@ def pptx():
 
 
 # Add subcommands to the main CLI group
-pptx.add_command(get)
+pptx.add_command(pptx_get, name='get')
+#pptx.add_command(set)
