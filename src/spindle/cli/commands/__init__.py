@@ -13,3 +13,4 @@ from .fabric import *
 from .ticket import *
 from .youtube import *
 from .save import *
+from .pptx import *
