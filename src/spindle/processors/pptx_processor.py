@@ -36,9 +36,9 @@ class PPTXProcessor(AbstractProcessor):
         """
         Postprocess the data. Here we filter based on the options.
         """
-        if data.get('only_content'):
+        if kwargs.get('only_content'):
             data['slides'] = [{'content': slide['content']} for slide in data['slides']]
-        elif data.get('only_notes'):
+        elif kwargs.get('only_notes'):
             data['slides'] = [{'notes': slide['notes']} for slide in data['slides']]
         return data
 
