@@ -2,6 +2,9 @@ from spindle.abstracts import AbstractFetcher
 from typing import Any, Dict
 from pptx import Presentation
 
+__all__ = ['PPTXSetterFetcher']
+
+
 class PPTXSetterFetcher(AbstractFetcher):
     def _fetch_content(self, source: str, **kwargs: Any) -> Presentation:
         """

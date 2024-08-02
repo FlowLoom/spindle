@@ -5,6 +5,9 @@ from spindle.fetchers import PPTXSetterFetcher
 from spindle.processors import PPTXSetterProcessor
 from spindle.handlers import PPTXSetterHandler
 
+__all__ = ['PPTXSetterFetcherFactory']
+
+
 class PPTXSetterFetcherFactory(AbstractFetcherFactory):
     def _create_fetcher(self, **kwargs):
         processor = self._create_processor(**kwargs)
