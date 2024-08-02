@@ -1,6 +1,9 @@
+# src/spindle/processors/pptx_setter_processor.py
+
 from spindle.abstracts import AbstractProcessor
 from typing import Any, Dict
 from pptx import Presentation
+from pptx.util import Inches
 from pptx.shapes.autoshape import Shape
 from pptx.shapes.base import BaseShape
 
@@ -16,32 +19,36 @@ class PPTXSetterProcessor(AbstractProcessor):
 
     def _main_process(self, data: Dict[str, Any], **kwargs) -> Dict[str, Any]:
         presentation = data['presentation']
-        slide_content = kwargs.get('slide_content')
-        slide_notes = kwargs.get('slide_notes')
+        text = kwargs.get('text')
+        is_notes = kwargs.get('is_notes', False)
         slide_index = kwargs.get('slide_index')
 
         if slide_index is not None:
-            self._set_single_slide(presentation, slide_index, slide_content, slide_notes)
+            self._set_single_slide(presentation, slide_index, text, is_notes)
         else:
-            self._set_all_slides(presentation, slide_content, slide_notes)
+            self._set_all_slides(presentation, text, is_notes)
 
         return {'presentation': presentation}
 
     def _postprocess(self, data: Dict[str, Any], **kwargs) -> Dict[str, Any]:
         return data
 
-    def _set_single_slide(self, presentation: Presentation, index: int, content: str, notes: str):
+    def _set_single_slide(self, presentation: Presentation, index: int, content: str, is_notes: bool):
         if 0 <= index < len(presentation.slides):
             slide = presentation.slides[index]
-            self._set_slide_content(slide, content)
-            self._set_slide_notes(slide, notes)
+            if is_notes:
+                self._set_slide_notes(slide, content)
+            else:
+                self._set_slide_content(slide, content)
         else:
             raise ValueError(f"Slide index {index} is out of range. Presentation has {len(presentation.slides)} slides.")
 
-    def _set_all_slides(self, presentation: Presentation, content: str, notes: str):
+    def _set_all_slides(self, presentation: Presentation, content: str, is_notes: bool):
         for slide in presentation.slides:
-            self._set_slide_content(slide, content)
-            self._set_slide_notes(slide, notes)
+            if is_notes:
+                self._set_slide_notes(slide, content)
+            else:
+                self._set_slide_content(slide, content)
 
     def _set_slide_content(self, slide, content: str):
         if content:
