@@ -40,12 +40,8 @@ The goals of this exercise are to:
 - Review and optimize revisions
 
 # OUTPUT
-
-ORIGINAL TEXT:
-- In an output section called ORIGINAL TEXT, list each text segment from the input in a set of bullets.
-
-REVISED TEXT:
-- In an output section called REVISED TEXT, list the revised version of each text segment in a set of bullets.
+COMPLETE TEXT:
+- The complete revised text with all segments combined in following its original format.
 
 REVISIONS:
 - In an output section called REVISIONS, provide a detailed explanation of each revision made, including the original phrase and the revised phrase.
