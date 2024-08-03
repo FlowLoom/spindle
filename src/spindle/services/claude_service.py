@@ -6,6 +6,7 @@ from spindle.exceptions import SpindleException
 __All__ = ['ClaudeService']
 
 
+# TODO: This is redundant with anthropic, consider removing
 class ClaudeService:
     def __init__(self, config: ConfigManager):
         self.config = config
