@@ -47,7 +47,7 @@ while [ $start -lt $total ]; do
     timestamp=$(date +"%Y%m%d_%H%M%S")
 
     # Execute the command with current start and end values, including the timestamp in the output filename
-    spindle git --repo="$repo_path" --format=json --output="$dest_dir/tickets_${timestamp}.json" --start=$start --end=$end --full-message | fabric -sp git_tickets_json > "$dest_dir/fab_tickets_${timestamp}.json"
+    spindle git --repo="$repo_path" --format=json --output="$dest_dir/tickets_${timestamp}.json" --start=$start --end=$end --full-message | spindle fabric process -sp git_tickets_json > "$dest_dir/fab_tickets_${timestamp}.json"
 
     # Increment start value by batch size
     start=$((start + batch_size))
