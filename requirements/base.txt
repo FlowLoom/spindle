@@ -6,6 +6,8 @@ gitpython==3.1.43 # https://github.com/gitpython-developers/GitPython
 python-dotenv # https://github.com/theskumar/python-dotenv
 # TODO Pin the version
 isodate # https://github.com/gweis/isodate
+# TODO Pin the version
+pydantic-settings # https://github.com/pydantic/pydantic-settings
 
 # Ticketing System
 # ------------------------------------------------------------------------------
