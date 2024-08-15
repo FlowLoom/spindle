@@ -83,27 +83,37 @@ Key Points:
 1. [First key point]
 2. [Second key point]
 3. [Third key point (if applicable)]
+4. [Continue with additional key points as needed]
 
 Practical Considerations:
 1. [First practical consideration]
 2. [Second practical consideration (if applicable)]
+3. [Continue with additional practical considerations as needed]
 
-Original Line:
-[Quote the originals line from the input that this card is based on]
+Original Sentences:
+1. [First original sentence from the talk track]
+2. [Second original sentence from the talk track (if applicable)]
+3. [Third original sentence from the talk track (if applicable)]
+4. [Continue with additional sentence from the talk track as needed]
 
 Card 2: [Title]
 
 Key Points:
 1. [First key point]
-2. [Second key point]
+2. [Second key point (if applicable)]
 3. [Third key point (if applicable)]
+4. [Continue with additional key points as needed]
 
 Practical Considerations:
 1. [First practical consideration]
 2. [Second practical consideration (if applicable)]
+3. [Continue with additional practical considerations as needed]
 
-Original Line:
-[Quote the original lines from the input that this card is based on]
+Original Sentences:
+1. [First original sentence from the talk track]
+2. [Second original sentence from the talk track (if applicable)]
+3. [Third original sentence from the talk track (if applicable)]
+4. [Continue with additional sentence from the talk track as needed]
 
 [Continue with additional card details as needed]
 
