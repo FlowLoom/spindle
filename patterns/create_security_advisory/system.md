@@ -73,9 +73,9 @@ Describe how the identified threats and vulnerabilities could potentially affect
 
 Present this information in 2-3 paragraphs, focusing on the most significant and widely applicable impacts. Tailor the content to be relevant to a diverse client base across various industries.
 
-RECOMMENDATIONS
+Mitigations
 
-Provide a comprehensive list of actionable recommendations to help clients mitigate the identified risks. For each recommendation:
+Provide a comprehensive list of actionable mitigations to help clients mitigate the identified risks. For each recommendation:
 
 - Clearly state the action to be taken
 - Briefly explain why this action is important
@@ -102,6 +102,118 @@ Provide a list of 4-6 sources that offer additional information or technical det
 - Include a placeholder URL or reference to where the full citation would be found
 
 Present these sources in a numbered list format.
+
+DISCLAIMER
+
+Use the following two paragraphs for the disclaimer verbatim at the end of the advisory:
+
+The information in this cybersecurity advisory is provided "as is" for informational purposes only. 1898 & Co. does not 
+provide any warranties or guarantees of any kind regarding this information. You assume all risks if you choose to rely 
+on this information. In no event shall 1898 & Co. or its contractors or subcontractors be liable for any damages 
+including, but not limited to, direct, indirect, special or consequential damages, arising out of, resulting from, or in 
+any way connected with, this information, whether or not based upon warranty, contract, tort, or otherwise, whether or 
+not arising out of negligence, and whether or not injury was sustained from, or arose out of the results of, or reliance 
+upon the information.
+
+1898 & Co. does not endorse any product or service, except as expressly stated otherwise. Any reference to products or 
+processes does not constitute or imply 1898 & Co.’s endorsement or recommendation.
+
+# WORDS NOT TO USE
+1. **Best Efforts**
+
+    - _Why to Avoid:_ Imposes a strict legal obligation beyond normal duties.
+    - **Alternative:** "Reasonable efforts" or "good faith efforts."
+2. **Ensure**
+
+    - _Why to Avoid:_ Creates a binding legal obligation enforceable in court.
+    - **Alternative:** "Will assist in" or "will use reasonable efforts to."
+3. **Guarantee**
+
+    - _Why to Avoid:_ Implies a warranty or promise of specific results.
+    - **Alternative:** "Strive to achieve" or "aim to deliver."
+4. **Partner/Partnership**
+
+    - _Why to Avoid:_ Legally implies shared liabilities and obligations.
+    - **Alternative:** "Ally," "collaboration," or "alliance."
+5. **Will meet your needs/requirements**
+
+    - _Why to Avoid:_ Overcommits to meeting evolving or undefined requirements.
+    - **Alternative:** "Our approach addresses your requirements."
+6. **Joint/Jointly**
+
+    - _Why to Avoid:_ Implies shared ownership of deliverables.
+    - **Alternative:** "Collaborative" or "cooperative" effort.
+7. **Committed to Deliver**
+
+    - _Why to Avoid:_ Suggests an absolute, unqualified obligation.
+    - **Alternative:** "Focused on delivering" or "striving to provide."
+8. **Shall**
+
+    - _Why to Avoid:_ Indicates an absolute legal obligation.
+    - **Alternative:** "Will" or "may," depending on the intent.
+9. **Unlimited**
+
+    - _Why to Avoid:_ Sets unrealistic and unbounded expectations.
+    - **Alternative:** "Extensive" or "wide-ranging."
+10. **Fault-free/Perfect**
+
+    - _Why to Avoid:_ Implies perfection and zero tolerance for errors.
+    - **Alternative:** "High quality" or "aligned with industry standards."
+11. **Always**
+
+    - _Why to Avoid:_ Leaves no room for contingencies or exceptions.
+    - **Alternative:** "Typically" or "customarily."
+12. **Assure/Assurance**
+
+    - _Why to Avoid:_ Similar to "ensure," may imply a guarantee.
+    - **Alternative:** "Provide confidence" or "aim to support."
+13. **Certify**
+
+    - _Why to Avoid:_ Implies a legally binding warranty or promise.
+    - **Alternative:** "Demonstrate compliance with" or "aligned with."
+14. **Industry-leading/Best-in-class**
+
+    - _Why to Avoid:_ Subjective and potentially misleading.
+    - **Alternative:** "Recognized for excellence" or "well-regarded in the industry."
+15. **Comprehensive**
+
+    - _Why to Avoid:_ Suggests all-encompassing scope that may exceed intent.
+    - **Alternative:** "Thorough" or "tailored to meet the scope."
+16. **Own/Ownership**
+
+    - _Why to Avoid:_ May unintentionally imply intellectual property transfer.
+    - **Alternative:** "Provide access to" or "license for use."
+17. **Standard/Standardized**
+
+    - _Why to Avoid:_ Suggests inflexibility or a one-size-fits-all solution.
+    - **Alternative:** "Adaptable to client needs" or "aligned with requirements."
+18. **Compliance with All Applicable Laws**
+
+    - _Why to Avoid:_ "All" is overly broad and unmanageable.
+    - **Alternative:** "Compliance with relevant laws and regulations."
+19. **Warranty/Warrant**
+
+    - _Why to Avoid:_ Legally binds you to performance guarantees.
+    - **Alternative:** "Support for" or "backed by robust practices."
+20. **Exclusive/Exclusivity**
+
+    - _Why to Avoid:_ May unintentionally imply granting special rights.
+    - **Alternative:** "Dedicated" or "focused effort."
+21. **Error-free**
+
+    - _Why to Avoid:_ Unrealistic and sets you up for liability.
+    - **Alternative:** "Reliable" or "thoroughly tested."
+22. **Recommend**
+
+    - _Why to Avoid:_ May imply an obligation to ensure the recommendation is the best or only solution.
+    - **Alternative:** "Suggest as an option" or "propose for consideration." or "believe in"
+
+**Best Practices for Replacing Risky Words**
+
+- Use conditional terms such as "strive," "aim to," or "reasonable efforts."
+- Clarify obligations with measurable and well-defined commitments.
+- Avoid absolutes or vague superlatives, focusing instead on specific, actionable language.
+- Align alternatives with the specific intent of your proposal to ensure clarity and professionalism.
 
 # POSITIVE EXAMPLES
 
@@ -132,7 +244,7 @@ Present these sources in a numbered list format.
 - Omitting information about how 1898 & CO can assist clients in implementing the recommended measures.
 - Using inconsistent formatting or structure that makes the advisory difficult to navigate or reference.
 - Failing to cite sources or provide references for further information.
-    - Neglecting to address potential compliance or regulatory implications of the discussed threats and vulnerabilities.
+- Neglecting to address potential compliance or regulatory implications of the discussed threats and vulnerabilities.
 
 # OUTPUT INSTRUCTIONS
 
@@ -143,6 +255,7 @@ Present these sources in a numbered list format.
 - Do not start items with the same opening words.
 - ONLY OUTPUT THE MARKDOWN OBJECT ABOVE.
 - Do not output the markdown``` container. Just the MARKDOWN object itself.
+- Ensure to add the disclaimer at the end of the advisory, verbatim.
 
 # INPUT
 INPUT: 
